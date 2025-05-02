@@ -37,7 +37,13 @@ export const registerUser = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: 'User created successfully',
-            user
+            userData: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                acessToken: generateToken(user)
+            }
         })
 
 
@@ -50,4 +56,55 @@ export const registerUser = async (req, res) => {
         })
 
     }
-}  
+}
+
+export const loginUser = async (req, res) => {
+    try {
+
+        const { email, password } = req.body
+
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: 'All fields are required'
+            })
+        }
+
+        const isUserExist = await User.findOne({ email })
+
+        if (!isUserExist) {
+            return res.status(400).json({
+                success: false,
+                message: 'User not found'
+            })
+        }
+
+        const isPasswordMatch = await isUserExist.matchPassword(password)
+
+        if (!isPasswordMatch) {
+            return res.status(400).json({
+                success: false,
+                message: 'Password not match'
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'User logged in successfully',
+            userData: {
+                id: isUserExist._id,
+                name: isUserExist.name,
+                email: isUserExist.email,
+                phone: isUserExist.phone,
+                acessToken: generateToken(isUserExist)
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        })
+
+    }
+}
