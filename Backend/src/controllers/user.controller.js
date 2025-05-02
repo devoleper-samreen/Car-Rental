@@ -108,3 +108,45 @@ export const loginUser = async (req, res) => {
 
     }
 }
+
+export const changePassword = async (req, res) => {
+    try {
+        const { currPassword, newPassword } = req.body
+
+        if (!currPassword || !newPassword) {
+            return res.status(400).json({
+                success: false,
+                message: 'All fields are required'
+            })
+        }
+
+        const user = await User.findById(req.user._id)
+
+        const isPasswordMatch = await user.matchPassword(currPassword)
+
+        if (!isPasswordMatch) {
+            return res.status(400).json({
+                success: false,
+                message: 'Password not match'
+            })
+        }
+
+        user.password = newPassword
+        await user.save()
+
+
+        return res.status(200).json({
+            success: true,
+            message: 'Password changed successfully',
+
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        })
+
+    }
+}
