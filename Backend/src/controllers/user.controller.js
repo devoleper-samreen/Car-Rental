@@ -84,7 +84,15 @@ export const loginUser = async (req, res) => {
         if (!isPasswordMatch) {
             return res.status(400).json({
                 success: false,
-                message: 'Password not match'
+                message: 'Password is incorrect'
+            })
+        }
+
+        //check user banned or not
+        if (isUserExist.status === 'Banned') {
+            return res.status(400).json({
+                success: false,
+                message: 'User is banned'
             })
         }
 
