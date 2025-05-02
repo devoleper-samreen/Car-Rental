@@ -117,7 +117,7 @@ export const loginUser = async (req, res) => {
     }
 }
 
-export const changePassword = async (req, res) => {
+export const updatePassword = async (req, res) => {
     try {
         const { currPassword, newPassword } = req.body
 
@@ -147,6 +147,54 @@ export const changePassword = async (req, res) => {
             success: true,
             message: 'Password changed successfully',
 
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        })
+
+    }
+}
+
+export const updateProfile = async (req, res) => {
+    try {
+        const { name, email, phone } = req.body
+
+        if (!name || !email || !phone) {
+            return res.status(400).json({
+                success: false,
+                message: 'All fields are required'
+            })
+        }
+
+        //check given email is not resigistered on portel yet except if it is current user email
+
+        const isEmailExist = await User.findOne({
+            email,
+            _id: { $ne: req.user._id }
+        });
+
+        if (isEmailExist) {
+            return res.status(400).json({
+                success: false,
+                message: "Email already in use by another user."
+            });
+        }
+
+        const user = await User.findById(req.user._id)
+
+        user.name = name
+        user.email = email
+        user.phone = phone
+        await user.save()
+
+        return res.status(200).json({
+            success: true,
+            message: 'Profile updated successfully',
+            user
         })
 
     } catch (error) {
