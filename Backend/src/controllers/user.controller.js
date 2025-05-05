@@ -1,4 +1,5 @@
 import { User } from '../models/user.model.js'
+import { generateToken } from '../utils/jwt.js'
 
 export const registerUser = async (req, res) => {
     try {
