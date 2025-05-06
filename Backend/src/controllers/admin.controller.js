@@ -107,3 +107,43 @@ export const loginAdmin = async (req, res) => {
     }
 }
 
+export const updatePassword = async (req, res) => {
+    try {
+        const { currPassword, newPassword } = req.body
+
+        if (!currPassword || !newPassword) {
+            return res.status(400).json({
+                success: false,
+                message: 'All fields are required'
+            })
+        }
+
+        const user = await Admin.findById(req.admin._id)
+
+        const isMatched = await user.matchPassword(currPassword)
+
+        if (!isMatched) {
+            return req.status(400).json({
+                success: false,
+                message: "current password is not correct"
+            })
+        }
+
+        user.password = newPassword
+        await user.save()
+
+        return res.status(200).json({
+            success: false,
+            message: "Password updated successfully"
+        })
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            success: false,
+            message: 'Something went wrong'
+        })
+    }
+}
+
