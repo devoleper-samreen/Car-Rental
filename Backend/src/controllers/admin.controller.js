@@ -147,3 +147,58 @@ export const updatePassword = async (req, res) => {
     }
 }
 
+export const updatedProfile = async (req, res) => {
+    try {
+        const { name, email, phone } = req.body
+
+        if (!name || !email || !phone) {
+            return res.status(400).json({
+                success: false,
+                message: 'All fields are required'
+            })
+        }
+
+        //check given email is not resigistered on portel yet except if it is current user email
+
+        const isEmailExist = await Admin.findOne({
+            email,
+            _id: { $ne: req.admin._id }
+        });
+
+        if (isEmailExist) {
+            return res.status(400).json({
+                success: false,
+                message: "Email already in use by another user."
+            });
+        }
+
+        const admin = await Admin.findById(req.admin._id)
+
+        if (!admin) {
+            return res.status(400).json({
+                success: false,
+                message: 'Admin not found'
+            })
+        }
+
+        admin.name = name
+        admin.email = email
+        admin.phone = phone
+
+        await admin.save()
+
+        return res.status(200).json({
+            success: true,
+            message: 'Admin updated successfully',
+            admin
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Something went wrong'
+        })
+    }
+}
+
