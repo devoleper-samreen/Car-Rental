@@ -202,3 +202,31 @@ export const updatedProfile = async (req, res) => {
     }
 }
 
+export const getAdminProfile = async (req, res) => {
+    try {
+
+        const admin = await Admin.findById(req.admin._id).select('-password -__v')
+
+        if (!admin) {
+            return res.status(400).json({
+                success: false,
+                message: 'Admin not found'
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Admin fetched successfully',
+            admin
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Something went wrong'
+        })
+
+    }
+}
+
