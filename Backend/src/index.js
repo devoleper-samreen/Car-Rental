@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDB } from './utils/db.js';
 import userRoutes from './routes/user.route.js';
+import adminRoutes from './routes/admin.route.js';
 
 dotenv.config();
 const app = express();
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
     res.send('Server is running');
 });
 app.use('/api/user', userRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Connect to database
 connectDB();
