@@ -49,13 +49,61 @@ export const registerAdmin = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-
         return res.status(500).json({
             success: false,
             message: 'Something went wrong'
         })
+    }
+}
+
+export const loginAdmin = async (req, res) => {
+    try {
+        const { email, password } = req.body
+
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: 'All fields are required'
+            })
+        }
+
+        const isAdminExist = await Admin.findOne({ email })
+
+        if (!isAdminExist) {
+            return res.status(400).json({
+                success: false,
+                message: 'Admin not found'
+            })
+        }
+
+        const isPasswordMatch = await isAdminExist.matchPassword(password)
+
+        if (!isPasswordMatch) {
+            return res.status(400).json({
+                success: false,
+                message: 'Password is incorrect'
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Admin logged in successfully',
+            admin: {
+                id: isAdminExist._id,
+                name: isAdminExist.name,
+                email: isAdminExist.email,
+                phone: isAdminExist.phone,
+                accessToken: generateToken(isAdminExist)
+            }
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: "error while logging"
+        })
 
     }
-
 }
 
