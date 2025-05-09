@@ -48,3 +48,55 @@ export const addCar = async (req, res) => {
 
     }
 }
+
+export const getCarById = async (req, res) => {
+
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please add car id'
+            });
+        }
+
+        const car = await Car.findById(id);
+
+        if (!car) {
+            return res.status(404).json({
+                success: false,
+                message: 'Car not found'
+            });
+        }
+
+        const carData = {
+            id: car._id,
+            name: car.name,
+            category: car.category,
+            brand: car.brand,
+            model: car.model,
+            year: car.year,
+            price: car.price,
+            image: car.image,
+            features: car.features,
+            transmission: car.transmission,
+            fuelType: car.fuelType,
+            seats: car.seats,
+            Avaible: car.isAvaible
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: carData
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+
+    }
+}
