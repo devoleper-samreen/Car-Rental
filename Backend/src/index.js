@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import { fileURLToPath } from "url";
 import dotenv from 'dotenv';
 import { connectDB } from './utils/db.js';
 import userRoutes from './routes/user.route.js';
@@ -18,6 +19,10 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
+
+// Define __dirname manually
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
