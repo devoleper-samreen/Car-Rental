@@ -1,8 +1,9 @@
 import { Car } from '../models/car.model.js';
+import { uploadOnCloudinary } from '../utils/cloudinary.js';
 
 export const addCar = async (req, res) => {
     try {
-        //const { image } = req.file;
+        const localFilePath = req.file?.path;
 
         const { name, category, brand, model, year, price, features, transmission, fuelType, seats } = req.body;
 
@@ -12,6 +13,11 @@ export const addCar = async (req, res) => {
             });
         }
 
+        const carImage = await uploadOnCloudinary(localFilePath);
+
+        console.log(carImage);
+
+
         const car = await Car.create({
             name,
             category,
@@ -19,8 +25,8 @@ export const addCar = async (req, res) => {
             model,
             year,
             price,
-            image: req.file.path || '',
-            features,
+            image: carImage?.secure_url || '',
+            features: features || [],
             transmission,
             fuelType,
             seats
