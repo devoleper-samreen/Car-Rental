@@ -1,5 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
+import fs from "fs";
+
 dotenv.config();
 
 console.log(process.env.CLOUD_NAME);
@@ -25,6 +27,9 @@ export const uploadOnCloudinary = async (localFilePath) => {
         const result = await cloudinary.uploader.upload(localFilePath, {
             resource_type: "auto"
         })
+
+        // delete file from local uploads/cars folder
+        fs.unlinkSync(localFilePath);
 
         //file uploaded seccessfully
         console.log("file upload on cloudinary")
