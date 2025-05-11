@@ -102,8 +102,27 @@ export const getBookingById = async (req, res) => {
             });
         }
 
+        const booking = await Booking.findById(id).populate("carId");
+
+        if (!booking) {
+            return res.status(404).json({
+                success: false,
+                message: "Booking not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: booking
+        });
+
 
     } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
 
     }
 }
