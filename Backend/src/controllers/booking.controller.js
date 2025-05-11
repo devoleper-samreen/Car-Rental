@@ -93,6 +93,15 @@ export const createBooking = async (req, res) => {
 
 export const getBookingById = async (req, res) => {
     try {
+        const { id } = req.params
+
+        if (!id) {
+            return res.status(400).json({
+                success: false,
+                message: "Booking ID is required"
+            });
+        }
+
 
     } catch (error) {
 
@@ -102,7 +111,28 @@ export const getBookingById = async (req, res) => {
 export const getUserBookings = async (req, res) => {
     try {
 
+        const userId = req.user._id;
+
+        const bookings = await Booking.find({ userId }).populate("carId");
+
+        if (!bookings) {
+            return res.status(404).json({
+                success: false,
+                message: "No bookings found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: bookings
+        });
+
     } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
 
     }
 }
