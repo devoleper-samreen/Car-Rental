@@ -1,9 +1,15 @@
 import image from "../assets/A-43.webp";
 import { FaUser } from "react-icons/fa";
+import { FaCar } from "react-icons/fa";
 import Card from '../componenets/Card';
 import ferrariImg from '../assets/Ferrari_Vision_GT_front_02.jpg';
 import bmwImg from '../assets/photo-1617469767053-d3b523a0b982.jpeg';
 import bugattiImg from '../assets/Bugatti-Chiron-Grand-Sport.jpeg';
+import supportImg from '../assets/soft-and-elegant-black-gradient-background-abstract-free-vector.jpg';
+import { FaCalendarAlt } from "react-icons/fa";
+import { BiSupport } from "react-icons/bi";
+import { AiFillSafetyCertificate } from "react-icons/ai";
+import { FaArrowRight } from "react-icons/fa6";
 
 function Home() {
 
@@ -80,7 +86,7 @@ function Home() {
                 </div>
             </div>
 
-            {/* featured sections */}
+            {/* featured section */}
             <div className="py-12 bg-[#111929] min-h-screen">
                 <div className="max-w-[1000px] mx-auto p-6 text-white text-center">
                     <h2 className="text-4xl font-bold m-4">Featured Vehicles</h2>
@@ -97,6 +103,57 @@ function Home() {
                             />
                         ))}
 
+                    </div>
+                </div>
+            </div>
+
+            {/* support section */}
+            <div
+                style={{ backgroundImage: `url(${supportImg})` }}
+                className="h-[75vh]">
+                <div className="max-w-[1000px] mx-auto py-28 flex justify-around items-center">
+                    <div className="group bg-white/10 backdrop-blur-md rounded-2xl p-8 hover:bg-white/20 transition-all duration-300">
+                        <FaCar className="text-indigo-400 text-6xl mb-4" />
+                        <h3 className="text-xl font-bold text-white mb-4">Premium Selection</h3>
+                        <p className="text-gray-400">Luxury and comfort <br /> vehicles</p>
+                    </div>
+                    <div className="group bg-white/10 backdrop-blur-md rounded-2xl p-8 hover:bg-white/20 transition-all duration-300">
+                        <FaCalendarAlt className="text-indigo-400 text-6xl mb-4" />
+                        <h3 className="text-xl font-bold text-white mb-4">Easy Booking</h3>
+                        <p className="text-gray-400">Quick reservation <br /> process</p>
+                    </div>
+                    <div className="group bg-white/10 backdrop-blur-md rounded-2xl p-8 hover:bg-white/20 transition-all duration-300">
+                        <BiSupport className="text-indigo-400 text-6xl mb-4" />
+                        <h3 className="text-xl font-bold text-white mb-4">24/7 Support</h3>
+                        <p className="text-gray-400">Always here to help</p>
+                    </div>
+                    <div className="group bg-white/10 backdrop-blur-md rounded-2xl p-8 hover:bg-white/20 transition-all duration-300">
+                        <AiFillSafetyCertificate className="text-indigo-400 text-6xl mb-4" />
+                        <h3 className="text-xl font-bold text-white mb-4">Safe & Secure</h3>
+                        <p className="text-gray-400">Fully insured vehicles</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div className="relative py-24 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-500 transform -skew-y-6">
+                </div>
+                <div className="container mx-auto px-6 relative">
+                    <div className="text-center max-w-3xl mx-auto">
+                        <h2 className="text-4xl font-bold text-white mb-8">
+                            Ready for Your Next Adventure?
+                        </h2>
+                        <p className="text-xl text-white/80 mb-12">
+                            Get started with our easy booking process and experience the best in car rentals.
+                        </p>
+
+                        <a class="inline-flex items-center px-8 py-4 bg-white text-gray-900 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg" href="/cars" data-discover="true">
+                            Book Now <FaArrowRight className="ml-2 font-extrabold" />
+                        </a>
                     </div>
                 </div>
             </div>
