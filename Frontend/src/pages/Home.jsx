@@ -1,9 +1,39 @@
 import image from "../assets/A-43.webp";
 import { FaUser } from "react-icons/fa";
+import Card from '../componenets/Card';
+import ferrariImg from '../assets/Ferrari_Vision_GT_front_02.jpg';
+import bmwImg from '../assets/photo-1617469767053-d3b523a0b982.jpeg';
+import bugattiImg from '../assets/Bugatti-Chiron-Grand-Sport.jpeg';
 
 function Home() {
+
+    const cars = [
+        {
+            id: 1,
+            name: "Mercedes-Benz S-Class",
+            type: "Luxury Sedan",
+            price: 299,
+            image: ferrariImg,
+        },
+        {
+            id: 2,
+            name: "BMW X7",
+            type: "Luxury SUV",
+            price: 249,
+            image: bmwImg,
+        },
+        {
+            id: 3,
+            name: "Bugatti",
+            type: "Sports Car",
+            price: 399,
+            image: bugattiImg,
+        },
+    ];
+
     return (
         <>
+            {/* Hero Section */}
             <div
                 className="relative bg-cover bg-center h-screen text-white"
                 style={{ backgroundImage: `url(${image})` }}
@@ -49,6 +79,28 @@ function Home() {
 
                 </div>
             </div>
+
+            {/* featured sections */}
+            <div className="py-12 bg-[#111929] min-h-screen">
+                <div className="max-w-[1000px] mx-auto p-6 text-white text-center">
+                    <h2 className="text-4xl font-bold m-4">Featured Vehicles</h2>
+                    <p className="text-[16px] text-gray-500">Choose from our exceptional collection</p>
+                    <div className="mt-20 flex gap-8">
+
+                        {cars.map((car) => (
+                            <Card
+                                key={car.id}
+                                name={car.name}
+                                image={car.image}
+                                type={car.type}
+                                price={car.price}
+                            />
+                        ))}
+
+                    </div>
+                </div>
+            </div>
+
         </>
     );
 }
