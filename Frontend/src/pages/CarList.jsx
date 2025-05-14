@@ -1,5 +1,6 @@
 import SearchHeader from '../componenets/searchHeader'
 import CarFilterSidebar from '../componenets/filter'
+import PickUppDroppOff from "../componenets/PickupDropoffForm"
 
 function CarList() {
     return (
@@ -15,6 +16,10 @@ function CarList() {
 
                 </aside>
                 <main className='bg-[#F6F7F9] w-[78%] h-80'>
+                    <div className='bg-[#F6F7F9]'>
+                        <PickUppDroppOff />
+
+                    </div>
 
                 </main>
 
