@@ -6,6 +6,7 @@ const UserDashboard = () => {
     return (
         <div className="min-h-screen bg-[#f4f6fa] p-6">
             <div className="max-w-6xl mx-auto">
+
                 {/* Profile Header */}
                 <div className="bg-white rounded-2xl shadow-md flex items-center p-6 mb-6">
                     <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-purple-500 to-violet-600 flex items-center justify-center text-white text-3xl font-bold">
@@ -29,21 +30,21 @@ const UserDashboard = () => {
                         <div className="mb-4">
                             <label className="text-gray-600 block mb-1">Name</label>
                             <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2">
-                                <FaUserShield className="text-purple-400 mr-2" />
+                                <FaUserShield className="text-purple-400 mr-3" />
                                 <span>Samreen Malik</span>
                             </div>
                         </div>
                         <div className="mb-4">
                             <label className="text-gray-600 block mb-1">Email</label>
                             <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2">
-                                <FaEnvelope className="text-purple-400 mr-2" />
+                                <FaEnvelope className="text-purple-400 mr-3" />
                                 <span>maliksamreen721@gmail.com</span>
                             </div>
                         </div>
                         <div className="mb-4">
                             <label className="text-gray-600 block mb-1">Phone</label>
                             <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2">
-                                <FaPhone className="text-purple-400 mr-2" />
+                                <FaPhone className="text-purple-400 mr-3" />
                                 <span>9897469714</span>
                             </div>
                         </div>
