@@ -4,6 +4,8 @@ import './App.css'
 import CarList from './pages/CarList'
 import UserSignup from './pages/UserSignup'
 import UserLogin from './pages/UserLogin'
+import AdminLogin from './pages/AdminLogin'
+import AdminSignup from './pages/AdminSignup'
 
 function App() {
 
@@ -14,6 +16,8 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<UserLogin />} />
           <Route path='/signup' element={<UserSignup />} />
+          <Route path='/admin/login' element={<AdminLogin />} />
+          <Route path='/admin/signup' element={<AdminSignup />} />
           <Route path='/list' element={<CarList />} />
         </Routes>
       </Router>
