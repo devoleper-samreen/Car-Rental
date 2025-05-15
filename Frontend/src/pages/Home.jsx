@@ -10,8 +10,13 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { BiSupport } from "react-icons/bi";
 import { AiFillSafetyCertificate } from "react-icons/ai";
 import { FaArrowRight } from "react-icons/fa6";
+import { FaUserShield } from 'react-icons/fa';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
 
 function Home() {
+    const [showDropdown, setShowDropdown] = useState(false);
 
     const cars = [
         {
@@ -47,10 +52,30 @@ function Home() {
                 {/* Dark overlay */}
                 <div className="absolute inset-0 bg-black opacity-50"></div>
 
-                <div class="relative w-[100%] flex justify-end p-6">
-                    <button class="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-all duration-300 shadow-lg">
-                        <FaUser />
-                        <span class="font-semibold">Login</span></button>
+                {/* Login Button + Dropdown */}
+                <div className="relative w-full flex justify-end p-6 z-20">
+                    <div className="relative">
+                        <button
+                            onClick={() => setShowDropdown(!showDropdown)}
+                            className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-all duration-300 shadow-lg"
+                        >
+                            <FaUser />
+                            <span className="font-semibold">Login</span>
+                        </button>
+
+                        {showDropdown && (
+                            <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-xl shadow-lg py-2 space-y-2 z-30">
+                                <Link to="/login" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full">
+                                    <FaUser className="text-[#4F39F6]" />
+                                    User Login
+                                </Link>
+                                <Link to="/admin/login" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full">
+                                    <FaUserShield className="text-[#4F39F6]" />
+                                    Admin Login
+                                </Link>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Text Content */}
@@ -151,7 +176,7 @@ function Home() {
                             Get started with our easy booking process and experience the best in car rentals.
                         </p>
 
-                        <a class="inline-flex items-center px-8 py-4 bg-white text-gray-900 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg" href="/cars" data-discover="true">
+                        <a className="inline-flex items-center px-8 py-4 bg-white text-gray-900 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg" href="/list" data-discover="true">
                             Book Now <FaArrowRight className="ml-2 font-extrabold" />
                         </a>
                     </div>

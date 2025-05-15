@@ -1,12 +1,13 @@
 import React from 'react'
 import { IoSearch } from "react-icons/io5";
+import { Link } from 'react-router-dom';
 
 function searchHeader() {
     return (
         <div className='max-w-[1100px] mx-auto h-24 bg-white flex items-center p-4 justify-between'>
 
             <div>
-                <p className='text-3xl font-bold text-[#4F3CF7]'>RidezOn</p>
+                <Link to='/' className='text-3xl font-bold text-[#4F3CF7]'>RidezOn</Link>
             </div>
 
             <div className='flex items-center gap-2 border-[2px] border-[#eaf0f7] px-6 py-2 rounded-full w-[400px]'>
