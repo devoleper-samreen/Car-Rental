@@ -7,6 +7,7 @@ import UserLogin from './pages/UserLogin'
 import AdminLogin from './pages/AdminLogin'
 import AdminSignup from './pages/AdminSignup'
 import UserDashboard from "./dashboard/UserDashboard"
+import AdminDashboard from "./dashboard/AdminDashboard"
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
           <Route path='/admin/login' element={<AdminLogin />} />
           <Route path='/admin/signup' element={<AdminSignup />} />
           <Route path='/user/dashboard' element={<UserDashboard />} />
+          <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/list' element={<CarList />} />
         </Routes>
       </Router>
