@@ -47,7 +47,7 @@ function AdminDashboard() {
 
 
             {/* Main Content */}
-            <main className="flex-1 p-8 mt-20">
+            <main className="flex-1 p-8 mt-20 bg-[#E5E7EB]">
                 {/* <div className="flex justify-between items-center mb-6">
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900">Car Fleet Management</h1>
