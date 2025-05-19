@@ -57,7 +57,7 @@ function Home() {
                     <div className="relative">
                         <button
                             onClick={() => setShowDropdown(!showDropdown)}
-                            className="flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-all duration-300 shadow-lg"
+                            className="cursor-pointer flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-all duration-300 shadow-lg"
                         >
                             <FaUser />
                             <span className="font-semibold">Login</span>
@@ -65,7 +65,7 @@ function Home() {
 
                         {showDropdown && (
                             <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-xl shadow-lg py-2 space-y-2 z-30">
-                                <Link to="/login" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full">
+                                <Link to="/user/login" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full">
                                     <FaUser className="text-[#4F39F6]" />
                                     User Login
                                 </Link>

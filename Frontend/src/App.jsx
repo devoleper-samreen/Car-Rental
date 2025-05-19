@@ -22,12 +22,16 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/login' element={<UserLogin />} />
-          <Route path='/signup' element={<UserSignup />} />
-          <Route path='/admin/login' element={<AdminLogin />} />
-          <Route path='/admin/signup' element={<AdminSignup />} />
+          <Route path='/list' element={<CarList />} />
+
+          //User
+          <Route path='/user/login' element={<UserLogin />} />
+          <Route path='/user/signup' element={<UserSignup />} />
           <Route path='/user/dashboard' element={<UserDashboard />} />
 
+          //Admin
+          <Route path='/admin/login' element={<AdminLogin />} />
+          <Route path='/admin/signup' element={<AdminSignup />} />
           <Route path='/admin/dashboard' element={<AdminDashboard />}>
             <Route index element={<Dashboard />} />
             <Route path='manage-cars' element={<ManageCars />} />
@@ -37,7 +41,6 @@ function App() {
             <Route path='setting' element={<Setting />} />
           </Route>
 
-          <Route path='/list' element={<CarList />} />
         </Routes>
       </Router>
     </>

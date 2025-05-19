@@ -18,7 +18,7 @@ const SignIn = () => {
                     <button className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition cursor-pointer">Sign In</button>
                 </form>
                 <p className="text-center text-sm mt-4 text-gray-600">
-                    Don’t have an account? <Link to="/signup" className="text-indigo-600 hover:underline">Sign Up</Link>
+                    Don’t have an account? <Link to="/user/signup" className="text-indigo-600 hover:underline">Sign Up</Link>
                 </p>
             </div>
         </div>
