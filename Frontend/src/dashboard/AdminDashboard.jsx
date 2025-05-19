@@ -15,7 +15,7 @@ function AdminDashboard() {
                 <nav className="mt-4">
                     <ul className="space-y-2">
                         <li
-                            onClick={() => navigate('/admin/dashboard/dashboard')}
+                            onClick={() => navigate('/admin/dashboard')}
                             className={`flex items-center px-4 py-3 cursor-pointer ${isActive('/admin/dashboard/dashboard') ? 'bg-indigo-600' : 'hover:bg-indigo-600'
                                 }`}
                         >
@@ -48,16 +48,6 @@ function AdminDashboard() {
 
             {/* Main Content */}
             <main className="flex-1 p-8 mt-20 bg-[#E5E7EB]">
-                {/* <div className="flex justify-between items-center mb-6">
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Car Fleet Management</h1>
-                        <p className="text-gray-600 text-sm">Manage your vehicle inventory and listings</p>
-                    </div>
-                    <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md shadow-md">
-                        <FaPlus /> Add New Vehicle
-                    </button>
-                </div>
-                Content section can go here */}
                 <Outlet />
 
             </main>
@@ -67,7 +57,7 @@ function AdminDashboard() {
                 <div className="flex items-center gap-2 bg-gray-200 text-gray-700 px-4 py-2 rounded-md">
                     <span className="font-medium">Admin User</span>
                 </div>
-                <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md">
+                <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md cursor-pointer">
                     Logout
                 </button>
             </div>
