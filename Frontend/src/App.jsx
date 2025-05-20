@@ -14,11 +14,14 @@ import Dashboard from "./pages/Dashboard"
 import ManageBookings from "./pages/ManageBookings"
 import Reports from "./pages/Reports"
 import Setting from "./pages/Setting"
+import { Toaster } from "react-hot-toast";
+
 
 function App() {
 
   return (
     <>
+      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
       <Router>
         <Routes>
           <Route path='/' element={<Home />} />
