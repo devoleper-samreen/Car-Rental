@@ -3,6 +3,8 @@ import { generateToken } from '../utils/jwt.js'
 
 export const registerUser = async (req, res) => {
     try {
+        console.log('registerUser');
+
         const { name, email, password, phone } = req.body
 
         if (!name || !email || !password || !phone) {

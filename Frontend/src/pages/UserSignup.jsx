@@ -9,7 +9,7 @@ import { useState } from "react";
 const UserSignUp = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        fullName: "",
+        name: "",
         phone: "",
         email: "",
         password: "",
@@ -23,9 +23,9 @@ const UserSignUp = () => {
     }
 
     const handleSubmit = async (e) => {
-        e.prevanteDefault();
+        e.preventDefault();
         try {
-            const response = await AxiosInstance.post("/user/register", formData)
+            const response = await AxiosInstance.post("/api/user/register", formData)
 
             console.log(response);
             navigate("/user/login");
@@ -48,8 +48,8 @@ const UserSignUp = () => {
                             type="text"
                             placeholder="Full Name"
                             className="bg-transparent w-full outline-none"
-                            name="fullName"
-                            value={formData.fullName}
+                            name="name"
+                            value={formData.name}
                             onChange={handleChange}
                         />
                     </div>
