@@ -28,7 +28,11 @@ const UserSignUp = () => {
             const response = await AxiosInstance.post("/api/user/register", formData)
 
             console.log(response);
-            navigate("/user/login");
+            localStorage.setItem("token", response.data.userData.acessToken);
+
+            toast.success(response.data.message);
+
+            navigate("/list");
 
         } catch (error) {
             console.log(error);
@@ -68,7 +72,7 @@ const UserSignUp = () => {
                     <button className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition cursor-pointer" type="submit">Sign Up</button>
                 </form>
                 <p className="text-center text-sm mt-4 text-gray-600">
-                    Already have an account? <Link to="/login" className="text-indigo-600 hover:underline">Sign In</Link>
+                    Already have an account? <Link to="/user/login" className="text-indigo-600 hover:underline">Sign In</Link>
                 </p>
             </div>
         </div>
