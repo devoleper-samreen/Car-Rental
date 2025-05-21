@@ -1,8 +1,10 @@
 import React from 'react';
 import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaCarSide, FaUserShield } from 'react-icons/fa';
 import { FaCar } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const UserDashboard = () => {
+    const { user } = useSelector((state) => state.auth);
     return (
         <div className="min-h-screen bg-[#f4f6fa] p-6">
             <div className="max-w-6xl mx-auto">
@@ -13,7 +15,7 @@ const UserDashboard = () => {
                         S
                     </div>
                     <div className="ml-4">
-                        <h2 className="text-2xl font-bold text-purple-700">Samreen Malik</h2>
+                        <h2 className="text-2xl font-bold text-purple-700">{user?.name || 'Samreen Malik'}</h2>
                         <p className="flex items-center text-gray-500">
                             <FaMapMarkerAlt className="mr-2 text-blue-400" /> Member since May 2025
                         </p>

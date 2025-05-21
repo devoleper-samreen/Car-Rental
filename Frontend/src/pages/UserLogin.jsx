@@ -24,10 +24,10 @@ const SignIn = () => {
         try {
             const response = await AxiosInstance.post("/api/user/login", fromData);
 
-            // console.log(response);
-            // localStorage.setItem("token", response.data.userData.acessToken);
+            console.log(response);
+
             dispatch(userLogin({
-                user: response.data.userData.user,
+                user: response.data.userData,
                 userToken: response.data.userData.acessToken
             }))
 
