@@ -1,8 +1,9 @@
-import React from 'react'
+import { useSelector } from 'react-redux'
 
 function Dashboard() {
+    const { user } = useSelector(state => state.auth)
     return (
-        <div>Dashboard</div>
+        <div>Dashboard and hello {user?.name}</div>
     )
 }
 
