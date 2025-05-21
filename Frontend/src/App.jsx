@@ -16,6 +16,7 @@ import Reports from "./pages/Reports"
 import Setting from "./pages/Setting"
 import { Toaster } from "react-hot-toast";
 import UserProtectedRoute from './UserProtectedRoute'
+import AdminProtectedRoute from './AdminProtectedRoute'
 
 
 function App() {
@@ -44,7 +45,10 @@ function App() {
           //Admin
           <Route path='/admin/login' element={<AdminLogin />} />
           <Route path='/admin/signup' element={<AdminSignup />} />
-          <Route path='/admin/dashboard' element={<AdminDashboard />}>
+          <Route path='/admin/dashboard'
+            element={<AdminProtectedRoute>
+              <AdminDashboard />
+            </AdminProtectedRoute>}>
             <Route index element={<Dashboard />} />
             <Route path='manage-cars' element={<ManageCars />} />
             <Route path='manage-users' element={<ManageUsers />} />
