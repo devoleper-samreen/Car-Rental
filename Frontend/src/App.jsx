@@ -15,6 +15,7 @@ import ManageBookings from "./pages/ManageBookings"
 import Reports from "./pages/Reports"
 import Setting from "./pages/Setting"
 import { Toaster } from "react-hot-toast";
+import UserProtectedRoute from './UserProtectedRoute'
 
 
 function App() {
@@ -30,7 +31,15 @@ function App() {
           //User
           <Route path='/user/login' element={<UserLogin />} />
           <Route path='/user/signup' element={<UserSignup />} />
-          <Route path='/user/dashboard' element={<UserDashboard />} />
+          <Route
+            path="/user/dashboard"
+            element={
+              <UserProtectedRoute>
+                <UserDashboard />
+              </UserProtectedRoute>
+            }
+          />
+
 
           //Admin
           <Route path='/admin/login' element={<AdminLogin />} />
