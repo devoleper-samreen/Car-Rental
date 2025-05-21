@@ -16,7 +16,6 @@ const adminSchema = new mongoose.Schema({
     },
     phone: {
         type: Number,
-        required: true
     },
     lastLogin: {
         type: Date,

@@ -3,9 +3,9 @@ import { generateToken } from "../utils/jwt.js";
 
 export const registerAdmin = async (req, res) => {
     try {
-        const { name, email, password, phone } = req.body
+        const { name, email, password } = req.body
 
-        if (!name || !email || !password || !phone) {
+        if (!name || !email || !password) {
             return res.status(400).json({
                 success: false,
                 message: 'All fields are required'
@@ -25,7 +25,6 @@ export const registerAdmin = async (req, res) => {
             name,
             email,
             password,
-            phone
         })
 
         if (!admin) {
