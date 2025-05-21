@@ -28,7 +28,7 @@ const UserSignUp = () => {
             const response = await AxiosInstance.post("/api/user/register", formData)
 
             console.log(response);
-            localStorage.setItem("token", response.data.userData.acessToken);
+            localStorage.setItem("userToken", response.data.userData.acessToken);
 
             toast.success(response.data.message);
 

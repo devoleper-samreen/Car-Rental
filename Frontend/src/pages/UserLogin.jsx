@@ -4,8 +4,11 @@ import AxiosInstance from "../apiManager/axiosInstance"
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { userLogin } from "../features/auth/authSlice"
+import { useDispatch } from "react-redux";
 
 const SignIn = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,8 +24,13 @@ const SignIn = () => {
         try {
             const response = await AxiosInstance.post("/api/user/login", fromData);
 
-            console.log(response);
-            localStorage.setItem("token", response.data.userData.acessToken);
+            // console.log(response);
+            // localStorage.setItem("token", response.data.userData.acessToken);
+            dispatch(userLogin({
+                user: response.data.userData.user,
+                userToken: response.data.userData.acessToken
+            }))
+
             toast.success(response.data.message);
             navigate("/list");
 
