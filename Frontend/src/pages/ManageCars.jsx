@@ -27,7 +27,6 @@ function ManageCars() {
         transmission: '',
         carType: '',
         status: 'available',
-        image: '',
         features: '',
     })
 
@@ -38,12 +37,22 @@ function ManageCars() {
         })
     }
 
-    const formData = {
-        ...carData,
-        //seperate features by comma
-        features: carData.features.split(',').map(feature => feature.trim()),
-        image: image,
-    }
+    const formData = new FormData();
+    formData.append('name', carData.name);
+    formData.append('brand', carData.brand);
+    formData.append('model', carData.model);
+    formData.append('year', carData.year);
+    formData.append('pricePerDay', carData.pricePerDay);
+    formData.append('seats', carData.seats);
+    formData.append('fuelType', carData.fuelType);
+    formData.append('transmission', carData.transmission);
+    formData.append('carType', carData.carType);
+    formData.append('status', carData.status);
+    carData.features.split(',').map(f => f.trim()).forEach((feature) => {
+        formData.append('features[]', feature);
+    });
+
+    formData.append('image', image);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -52,19 +61,19 @@ function ManageCars() {
             console.log(response);
             toast.success(response.data.message);
 
-            setCarData({
-                name: '',
-                brand: '',
-                model: '',
-                year: '',
-                pricePerDay: '',
-                seats: '',
-                fuelType: '',
-                transmission: '',
-                carType: '',
-                status: 'available',
-                features: '',
-            })
+            // setCarData({
+            //     name: '',
+            //     brand: '',
+            //     model: '',
+            //     year: '',
+            //     pricePerDay: '',
+            //     seats: '',
+            //     fuelType: '',
+            //     transmission: '',
+            //     carType: '',
+            //     status: 'available',
+            //     features: '',
+            // })
 
             setIsModalOpen(false);
         } catch (error) {
