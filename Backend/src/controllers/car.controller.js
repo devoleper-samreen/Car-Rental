@@ -4,8 +4,11 @@ import { uploadOnCloudinary } from '../utils/cloudinary.js';
 export const addCar = async (req, res) => {
     try {
         const localFilePath = req.file?.path;
+        console.log(localFilePath);
 
-        const { name, category, brand, model, year, price, features, transmission, fuelType, seats } = req.body;
+        console.log(req.body);
+
+        const { name, carType: category, brand, model, year, pricePerDay: price, features, transmission, fuelType, seats, status } = req.body;
 
         if (!name || !category || !brand || !model || !year || !price || !transmission || !fuelType || !seats) {
             return res.status(400).json({
@@ -15,8 +18,12 @@ export const addCar = async (req, res) => {
 
         const carImage = await uploadOnCloudinary(localFilePath);
 
-        console.log(carImage);
 
+        if (!carImage) {
+            return res.status(400).json({
+                message: 'Car image not uploaded'
+            });
+        }
 
         const car = await Car.create({
             name,
@@ -29,7 +36,9 @@ export const addCar = async (req, res) => {
             features: features || [],
             transmission,
             fuelType,
-            seats
+            seats,
+            status,
+            isAvaible: status === 'available' ? true : false
         });
 
         if (!car) {

@@ -31,14 +31,11 @@ axiosInstance.interceptors.response.use(
         //  You can handle specific errors globally
         if (status === 401) {
             console.warn("Unauthorized! Redirecting to login...");
-            // window.location.href = "/login"; // Uncomment if you want to redirect
         }
 
         if (status === 500) {
             console.warn("Server Error! Try again later.");
         }
-
-        // You can show a toast here if using something like react-toastify
 
         return Promise.reject(error);
     }

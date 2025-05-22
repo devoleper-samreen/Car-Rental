@@ -37,43 +37,48 @@ function ManageCars() {
         })
     }
 
-    const formData = new FormData();
-    formData.append('name', carData.name);
-    formData.append('brand', carData.brand);
-    formData.append('model', carData.model);
-    formData.append('year', carData.year);
-    formData.append('pricePerDay', carData.pricePerDay);
-    formData.append('seats', carData.seats);
-    formData.append('fuelType', carData.fuelType);
-    formData.append('transmission', carData.transmission);
-    formData.append('carType', carData.carType);
-    formData.append('status', carData.status);
-    carData.features.split(',').map(f => f.trim()).forEach((feature) => {
-        formData.append('features[]', feature);
-    });
-
-    formData.append('image', image);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append('name', carData.name);
+        formData.append('brand', carData.brand);
+        formData.append('model', carData.model);
+        formData.append('year', carData.year);
+        formData.append('pricePerDay', carData.pricePerDay);
+        formData.append('seats', carData.seats);
+        formData.append('fuelType', carData.fuelType);
+        formData.append('transmission', carData.transmission);
+        formData.append('carType', carData.carType);
+        formData.append('status', carData.status);
+
+        carData.features.split(',').map(f => f.trim()).forEach((feature) => {
+            formData.append('features[]', feature);
+        });
+
+        formData.append('image', image);
+        console.log("formData : ", formData);
         try {
-            const response = await AxiosInstance.post("/api/car/add", formData)
+            const response = await AxiosInstance.post("/api/car/add", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
             console.log(response);
             toast.success(response.data.message);
 
-            // setCarData({
-            //     name: '',
-            //     brand: '',
-            //     model: '',
-            //     year: '',
-            //     pricePerDay: '',
-            //     seats: '',
-            //     fuelType: '',
-            //     transmission: '',
-            //     carType: '',
-            //     status: 'available',
-            //     features: '',
-            // })
+            setCarData({
+                name: '',
+                brand: '',
+                model: '',
+                year: '',
+                pricePerDay: '',
+                seats: '',
+                fuelType: '',
+                transmission: '',
+                carType: '',
+                status: 'available',
+                features: '',
+            })
 
             setIsModalOpen(false);
         } catch (error) {
@@ -137,18 +142,16 @@ function ManageCars() {
 
                     <div className="flex gap-4 mt-6">
                         <Select className="w-full" placeholder="Select fuel type"
-                            name="fuelType"
                             value={carData.fuelType}
-                            onChange={handleChange}
+                            onChange={(value) => setCarData({ ...carData, fuelType: value })}
                         >
                             <Option value="petrol">Petrol</Option>
                             <Option value="diesel">Diesel</Option>
                             <Option value="electric">Electric</Option>
                         </Select>
                         <Select className="w-full"
-                            name="transmission"
                             value={carData.transmission}
-                            onChange={handleChange}
+                            onChange={(value) => setCarData({ ...carData, transmission: value })}
                             placeholder="Select transmission">
                             <Option value="automatic">Automatic</Option>
                             <Option value="manual">Manual</Option>
@@ -157,18 +160,16 @@ function ManageCars() {
 
                     <div className="flex gap-4">
                         <Select className="w-full" placeholder="Select car type"
-                            name="carType"
                             value={carData.carType}
-                            onChange={handleChange}
+                            onChange={(value) => setCarData({ ...carData, carType: value })}
                         >
                             <Option value="suv">SUV</Option>
                             <Option value="sedan">Sedan</Option>
                             <Option value="hatchback">Hatchback</Option>
                         </Select>
                         <Select className="w-full"
-                            name="status"
                             value={carData.status}
-                            onChange={handleChange}
+                            onChange={(value) => setCarData({ ...carData, status: value })}
                             placeholder="Status" defaultValue="available">
                             <Option value="available">Available</Option>
                             <Option value="unavailable">Unavailable</Option>
