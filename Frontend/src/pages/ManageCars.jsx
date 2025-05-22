@@ -11,6 +11,7 @@ const { Option } = Select;
 function ManageCars() {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const showModal = () => setIsModalOpen(true);
     const handleCancel = () => setIsModalOpen(false);
@@ -58,6 +59,7 @@ function ManageCars() {
         formData.append('image', image);
         console.log("formData : ", formData);
         try {
+            setIsLoading(true);
             const response = await AxiosInstance.post("/api/car/add", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -82,6 +84,7 @@ function ManageCars() {
 
             setIsModalOpen(false);
         } catch (error) {
+            setIsLoading(false);
             console.log(error);
             toast.error(error.response.data.message);
         }
@@ -203,7 +206,11 @@ function ManageCars() {
                             Cancel
                         </button>
                         <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded cursor-pointer">
-                            Add Car
+                            {isLoading ? (
+                                <span className="loader">loading...</span>
+                            ) : (
+                                <span>Add Car</span>
+                            )}
                         </button>
                     </div>
                 </form>
