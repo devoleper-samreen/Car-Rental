@@ -85,7 +85,9 @@ function ManageCars() {
                 status: 'available',
                 features: '',
             })
-
+            setImage(null);
+            const updatedCars = await getAllCars();
+            setCars(updatedCars);
             setIsModalOpen(false);
         } catch (error) {
             setIsLoading(false);
@@ -114,7 +116,7 @@ function ManageCars() {
     }, [])
 
     return (
-        <div>
+        <div className='h-[calc(100vh-150px)] overflow-auto p-4' style={{}}>
             <div className="flex justify-between items-center mb-12">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900">Car Fleet Management</h1>
