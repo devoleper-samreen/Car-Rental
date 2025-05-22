@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Select, Upload, Input } from 'antd';
 import { FaPlus } from 'react-icons/fa';
 import { UploadOutlined } from '@ant-design/icons';
 import AxiosInstance from "../apiManager/axiosInstance";
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import CarCard from '../componenets/CarCard';
 
 const { Option } = Select;
 
@@ -12,6 +13,8 @@ function ManageCars() {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [cars, setCars] = useState([]);
+
 
     const showModal = () => setIsModalOpen(true);
     const handleCancel = () => setIsModalOpen(false);
@@ -65,6 +68,7 @@ function ManageCars() {
                     "Content-Type": "multipart/form-data",
                 },
             })
+            //await fetchCars();
             console.log(response);
             toast.success(response.data.message);
 
@@ -90,9 +94,28 @@ function ManageCars() {
         }
     }
 
+    const getAllCars = async () => {
+        try {
+            const response = await AxiosInstance.get("/api/car/all");
+            console.log(response);
+            return response.data.cars;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    useEffect(() => {
+        const getCars = async () => {
+            const cars = await getAllCars();
+            setCars(cars);
+        }
+        getCars();
+    }, [])
+
     return (
         <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-12">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900">Car Fleet Management</h1>
                     <p className="text-gray-600 text-sm text-center">Manage your vehicle inventory and listings</p>
@@ -103,6 +126,23 @@ function ManageCars() {
                 >
                     <FaPlus /> Add New Vehicle
                 </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Car Cards */}
+                {
+                    cars?.map((car, index) => (
+                        <CarCard
+                            key={index}
+                            image={car.image}
+                            title={car.name}
+                            price={car.pricePerDay}
+                            transmission={car.transmission}
+                            features={car.features}
+                        />
+                    ))
+                }
+
             </div>
 
             <Modal

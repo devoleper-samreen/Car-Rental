@@ -1,6 +1,11 @@
 import mongoose from 'mongoose'
 
 const carSchema = new mongoose.Schema({
+    admin: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Admin',
+        required: true
+    },
     name: {
         type: String,
         required: [true, 'Please add car name']

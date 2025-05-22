@@ -3,6 +3,7 @@ import { uploadOnCloudinary } from '../utils/cloudinary.js';
 
 export const addCar = async (req, res) => {
     try {
+        const adminId = req.admin._id;
         const localFilePath = req.file?.path;
         console.log(localFilePath);
 
@@ -26,6 +27,7 @@ export const addCar = async (req, res) => {
         }
 
         const car = await Car.create({
+            admin: adminId,
             name,
             category,
             brand,
@@ -116,14 +118,37 @@ export const getCarById = async (req, res) => {
     }
 }
 
-// export const getAllCars = async (req, res) => {
-//     try {
+export const getAllCarsByAdmin = async (req, res) => {
+    try {
+        const adminId = req.admin._id;
+        console.log(adminId);
 
 
-//     } catch (error) {
+        const cars = await Car.find({ admin: adminId });
 
-//     }
-// }
+        if (!cars) {
+            return res.status(404).json({
+                success: false,
+                message: 'Cars not found'
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            cars
+        });
+
+
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+
+    }
+}
 
 
 export const getCarImage = async (req, res) => {
