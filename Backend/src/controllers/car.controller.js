@@ -8,9 +8,9 @@ export const addCar = async (req, res) => {
 
         console.log(req.body);
 
-        const { name, carType: category, brand, model, year, pricePerDay: price, features, transmission, fuelType, seats, status } = req.body;
+        const { name, category, brand, model, year, pricePerDay, features, transmission, fuelType, seats, status } = req.body;
 
-        if (!name || !category || !brand || !model || !year || !price || !transmission || !fuelType || !seats) {
+        if (!name || !category || !brand || !model || !year || !pricePerDay || !transmission || !fuelType || !seats) {
             return res.status(400).json({
                 message: 'Please add all fields'
             });
@@ -31,7 +31,7 @@ export const addCar = async (req, res) => {
             brand,
             model,
             year,
-            price,
+            pricePerDay,
             image: carImage?.secure_url || '',
             features: features || [],
             transmission,

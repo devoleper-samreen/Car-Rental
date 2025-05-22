@@ -25,7 +25,7 @@ function ManageCars() {
         seats: '',
         fuelType: '',
         transmission: '',
-        carType: '',
+        category: '',
         status: 'available',
         features: '',
     })
@@ -48,7 +48,7 @@ function ManageCars() {
         formData.append('seats', carData.seats);
         formData.append('fuelType', carData.fuelType);
         formData.append('transmission', carData.transmission);
-        formData.append('carType', carData.carType);
+        formData.append('category', carData.category);
         formData.append('status', carData.status);
 
         carData.features.split(',').map(f => f.trim()).forEach((feature) => {
@@ -75,7 +75,7 @@ function ManageCars() {
                 seats: '',
                 fuelType: '',
                 transmission: '',
-                carType: '',
+                category: '',
                 status: 'available',
                 features: '',
             })
@@ -148,6 +148,7 @@ function ManageCars() {
                             <Option value="petrol">Petrol</Option>
                             <Option value="diesel">Diesel</Option>
                             <Option value="electric">Electric</Option>
+                            <Option value="hybrid">Hybrid</Option>
                         </Select>
                         <Select className="w-full"
                             value={carData.transmission}
@@ -159,9 +160,9 @@ function ManageCars() {
                     </div>
 
                     <div className="flex gap-4">
-                        <Select className="w-full" placeholder="Select car type"
-                            value={carData.carType}
-                            onChange={(value) => setCarData({ ...carData, carType: value })}
+                        <Select className="w-full" placeholder="Select category"
+                            value={carData.category}
+                            onChange={(value) => setCarData({ ...carData, category: value })}
                         >
                             <Option value="suv">SUV</Option>
                             <Option value="sedan">Sedan</Option>

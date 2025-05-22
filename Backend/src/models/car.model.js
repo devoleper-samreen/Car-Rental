@@ -22,7 +22,7 @@ const carSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Please add year']
     },
-    price: {
+    pricePerDay: {
         type: Number,
         required: [true, 'Please add price per day']
     },
@@ -40,7 +40,7 @@ const carSchema = new mongoose.Schema({
     },
     fuelType: {
         type: String,
-        enum: ['petrol', 'disel', 'electric', 'hybrid'],
+        enum: ['petrol', 'diesel', 'electric', 'hybrid'],
         required: true
     },
     seats: {
