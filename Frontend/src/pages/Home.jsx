@@ -13,9 +13,13 @@ import { FaArrowRight } from "react-icons/fa6";
 import { FaUserShield } from 'react-icons/fa';
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 
 
 function Home() {
+    const { user, admin } = useSelector((state) => state.auth);
+
     const [showDropdown, setShowDropdown] = useState(false);
 
     const cars = [
@@ -42,6 +46,14 @@ function Home() {
         },
     ];
 
+
+    const getInitial = () => {
+        if (user?.name) return user.name[0].toUpperCase();
+        if (admin?.name) return admin.name[0].toUpperCase();
+        return "U";
+    };
+
+
     return (
         <>
             {/* Hero Section */}
@@ -55,28 +67,57 @@ function Home() {
                 {/* Login Button + Dropdown */}
                 <div className="relative w-full flex justify-end p-6 z-20">
                     <div className="relative">
-                        <button
-                            onClick={() => setShowDropdown(!showDropdown)}
-                            className="cursor-pointer flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-all duration-300 shadow-lg"
-                        >
-                            <FaUser />
-                            <span className="font-semibold">Login</span>
-                        </button>
+                        {!(user || admin) ? (
+                            // Show Login Button if user not logged in
+                            <button
+                                onClick={() => setShowDropdown(!showDropdown)}
+                                className="cursor-pointer flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-all duration-300 shadow-lg"
+                            >
+                                <FaUser />
+                                <span className="font-semibold">Login</span>
+                            </button>
+                        ) : (
+                            // Show Profile if user is logged in
+                            <button
+                                onClick={() => setShowDropdown(!showDropdown)}
+                                className="w-12 h-12 rounded-full bg-white/20 text-purple-500 flex items-center justify-center text-lg font-bold hover:bg-white/30 transition-all"
+                            >
+                                {getInitial()}
+                            </button>
+                        )}
 
                         {showDropdown && (
                             <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-xl shadow-lg py-2 space-y-2 z-30">
-                                <Link to="/user/login" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full">
-                                    <FaUser className="text-[#4F39F6]" />
-                                    User Login
-                                </Link>
-                                <Link to="/admin/login" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full">
-                                    <FaUserShield className="text-[#4F39F6]" />
-                                    Admin Login
-                                </Link>
+                                {!(user || admin) && !user ? (
+                                    <>
+                                        <Link to="/user/login" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full">
+                                            <FaUser className="text-[#4F39F6]" />
+                                            User Login
+                                        </Link>
+                                        <Link to="/admin/login" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full">
+                                            <FaUserShield className="text-[#4F39F6]" />
+                                            Admin Login
+                                        </Link>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Link to="/user/dashboard" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full">
+                                            <FaUser className="text-[#4F39F6]" />
+                                            User Dashboard
+                                        </Link>
+                                        {admin && (
+                                            <Link to="/admin/dashboard" className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full">
+                                                <FaUserShield className="text-[#4F39F6]" />
+                                                Admin Dashboard
+                                            </Link>
+                                        )}
+                                    </>
+                                )}
                             </div>
                         )}
                     </div>
                 </div>
+
 
                 {/* Text Content */}
                 <div className="relative z-10 h-full max-w-[1000px] mx-auto flex flex-col flex-start gap-8">
@@ -161,8 +202,6 @@ function Home() {
                 </div>
 
             </div>
-
-
 
             <div className="relative py-24 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-500 transform -skew-y-6">
