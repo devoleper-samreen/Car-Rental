@@ -1,8 +1,12 @@
 import React from 'react'
 import { IoSearch } from "react-icons/io5";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function searchHeader() {
+    const Navigate = useNavigate();
+    const { user } = useSelector((state) => state.auth);
+
     return (
         <div className='max-w-[1100px] mx-auto h-24 bg-white flex items-center p-4 justify-between'>
 
@@ -21,10 +25,11 @@ function searchHeader() {
                 </div>
             </div>
 
-            <div className='w-12 h-12 rounded-full'>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsynwv-5qtogtOwJbIjaPFJUmHpzhxgqIAug&s" alt="profile"
-                    className='w-full h-full object-cover rounded-full'
-                />
+            <div className='w-12 h-12 rounded-full bg-white/20 text-purple-500 flex items-center justify-center text-lg font-bold hover:bg-white/30 transition-all cursor-pointer border-[2px] border-purple-500'
+                title={user?.name}
+                onClick={() => { Navigate('/user/dashboard') }}
+            >
+                <span className="text-2xl">{user?.name?.charAt(0) || 'U'}</span>
             </div>
 
         </div>
