@@ -1,11 +1,19 @@
 import { FaTachometerAlt, FaCar, FaCalendarAlt, FaUsers, FaChartPie, FaCog, FaPlus } from "react-icons/fa";
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { adminLogout } from '../features/auth/authSlice'
 
 
 function AdminDashboard() {
     const navigate = useNavigate();
     const location = useLocation();
     const isActive = (path) => location.pathname === path;
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(adminLogout());
+        navigate('/admin/login');
+    }
 
     return (
         <div className="flex h-screen bg-gray-100">
@@ -49,7 +57,6 @@ function AdminDashboard() {
             {/* Main Content */}
             <main className="flex-1 p-8 mt-20 bg-[#E5E7EB]">
                 <Outlet />
-
             </main>
 
             {/* Top bar */}
@@ -57,7 +64,7 @@ function AdminDashboard() {
                 <div className="flex items-center gap-2 bg-gray-200 text-gray-700 px-4 py-2 rounded-md">
                     <span className="font-medium">Admin User</span>
                 </div>
-                <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md cursor-pointer">
+                <button onClick={handleLogout} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md cursor-pointer">
                     Logout
                 </button>
             </div>

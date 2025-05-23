@@ -107,6 +107,7 @@ export const loginUser = async (req, res) => {
                 name: isUserExist.name,
                 email: isUserExist.email,
                 phone: isUserExist.phone,
+                createdAt: isUserExist.createdAt,
                 acessToken: generateToken(isUserExist)
             }
         })

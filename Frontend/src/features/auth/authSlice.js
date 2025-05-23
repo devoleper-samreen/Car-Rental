@@ -24,18 +24,20 @@ export const authSlice = createSlice({
             localStorage.setItem('admin', JSON.stringify(action.payload.user));
 
         },
-        logout: (state) => {
+        userLogout: (state) => {
             state.user = null;
-            state.admin = null;
             state.userToken = null;
-            state.adminToken = null;
             localStorage.removeItem('userToken');
-            localStorage.removeItem('adminToken');
             localStorage.removeItem('user');
+        },
+        adminLogout: (state) => {
+            state.admin = null;
+            state.adminToken = null;
+            localStorage.removeItem('adminToken');
             localStorage.removeItem('admin');
         }
     }
 })
 
-export const { userLogin, adminLogin, logout } = authSlice.actions;
+export const { userLogin, adminLogin, userLogout, adminLogout } = authSlice.actions;
 export default authSlice.reducer;

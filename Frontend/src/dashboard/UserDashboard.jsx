@@ -1,10 +1,20 @@
 import React from 'react';
 import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaCarSide, FaUserShield } from 'react-icons/fa';
 import { FaCar } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { userLogout } from '../features/auth/authSlice.js';
+import { useNavigate } from 'react-router-dom';
 
 const UserDashboard = () => {
+    const navigate = useNavigate();
     const { user } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(userLogout());
+        navigate('/user/login');
+    };
+
     return (
         <div className="min-h-screen bg-[#f4f6fa] p-6">
             <div className="max-w-6xl mx-auto">
@@ -12,13 +22,20 @@ const UserDashboard = () => {
                 {/* Profile Header */}
                 <div className="bg-white rounded-2xl shadow-md flex items-center p-6 mb-6">
                     <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-purple-500 to-violet-600 flex items-center justify-center text-white text-3xl font-bold">
-                        S
+                        {user?.name?.charAt(0) || 'U'}
                     </div>
                     <div className="ml-4">
-                        <h2 className="text-2xl font-bold text-purple-700">{user?.name || 'Samreen Malik'}</h2>
+                        <h2 className="text-2xl font-bold text-purple-700">{user?.name || 'User'}</h2>
                         <p className="flex items-center text-gray-500">
-                            <FaMapMarkerAlt className="mr-2 text-blue-400" /> Member since May 2025
+                            <FaMapMarkerAlt className="mr-2 text-blue-400" />
+                            {`Member since ${new Date(user?.createdAt).toLocaleString('en-US', {
+                                month: 'long',
+                                year: 'numeric'
+                            })}`}
                         </p>
+                    </div>
+                    <div className="ml-auto bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md cursor-pointer">
+                        <button className='cursor-pointer' onClick={handleLogout}>Logout</button>
                     </div>
                 </div>
 
@@ -33,21 +50,21 @@ const UserDashboard = () => {
                             <label className="text-gray-600 block mb-1">Name</label>
                             <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2">
                                 <FaUserShield className="text-purple-400 mr-3" />
-                                <span>Samreen Malik</span>
+                                <span>{user?.name || 'User'}</span>
                             </div>
                         </div>
                         <div className="mb-4">
                             <label className="text-gray-600 block mb-1">Email</label>
                             <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2">
                                 <FaEnvelope className="text-purple-400 mr-3" />
-                                <span>maliksamreen721@gmail.com</span>
+                                <span>{user?.email || 'user@example.com'}</span>
                             </div>
                         </div>
                         <div className="mb-4">
                             <label className="text-gray-600 block mb-1">Phone</label>
                             <div className="flex items-center bg-gray-100 rounded-lg px-3 py-2">
                                 <FaPhone className="text-purple-400 mr-3" />
-                                <span>9897469714</span>
+                                <span>{user?.phone || '9897469714'}</span>
                             </div>
                         </div>
                         <button className="w-full mt-4 bg-gradient-to-tr from-purple-500 to-violet-600 text-white py-2 rounded-xl shadow hover:scale-105 transition-transform cursor-pointer">
