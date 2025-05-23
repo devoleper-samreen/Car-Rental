@@ -1,5 +1,5 @@
 import express from 'express';
-import { addCar, getCarById, getCarImage, searchCars, getAllCarsByAdmin } from '../controllers/car.controller.js';
+import { addCar, getCarById, getCarImage, searchCars, getAllCarsByAdmin, getAllCars } from '../controllers/car.controller.js';
 import { verifyAdmin } from '../middleware/verifyAdmin.js';
 import { upload } from '../utils/multer.js';
 
@@ -10,6 +10,8 @@ router.get('/car/:id', getCarById);
 router.get('/image/:id', getCarImage);
 router.get('/search', searchCars);
 router.get('/all', verifyAdmin, getAllCarsByAdmin);
+router.get('/all-cars', getAllCars);
+
 
 export default router;
 
