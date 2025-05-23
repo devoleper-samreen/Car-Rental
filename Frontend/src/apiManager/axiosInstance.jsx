@@ -31,6 +31,9 @@ axiosInstance.interceptors.response.use(
         //  You can handle specific errors globally
         if (status === 401) {
             console.warn("Unauthorized! Redirecting to login...");
+            //show a dilog box you are not login
+            alert("You are not logged in!");
+            window.location.href = "/";
         }
 
         if (status === 500) {
