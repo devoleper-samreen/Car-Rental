@@ -130,22 +130,36 @@ function ManageCars() {
                 </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Car Cards */}
-                {
-                    cars?.map((car, index) => (
-                        <CarCard
-                            key={index}
-                            image={car.image}
-                            title={car.name}
-                            price={car.pricePerDay}
-                            transmission={car.transmission}
-                            features={car.features}
-                        />
-                    ))
-                }
-
+            <div className="overflow-x-auto rounded-xl shadow-lg">
+                <table className="min-w-full bg-white text-sm text-left text-gray-500">
+                    <thead className="bg-gray-100 text-xs text-gray-700 uppercase">
+                        <tr>
+                            <th scope="col" className="px-6 py-4">Image</th>
+                            <th scope="col" className="px-6 py-4">Name</th>
+                            <th scope="col" className="px-6 py-4">Price/Day</th>
+                            <th scope="col" className="px-6 py-4">Transmission</th>
+                            <th scope="col" className="px-6 py-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {cars?.map((car, index) => (
+                            <tr key={index} className="border-b hover:bg-gray-50">
+                                <td className="px-6 py-3">
+                                    <img src={car.image} alt={car.name} className="h-14 w-24 object-cover rounded-lg" />
+                                </td>
+                                <td className="px-6 py-3 font-medium text-gray-900">{car.name}</td>
+                                <td className="px-6 py-3">${car.pricePerDay}</td>
+                                <td className="px-6 py-3">{car.transmission}</td>
+                                <td className="px-6 py-3 space-x-2">
+                                    <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Edit</button>
+                                    <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">Delete</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
+
 
             <Modal
                 title="Add New Car"

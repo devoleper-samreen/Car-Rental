@@ -80,7 +80,7 @@ function Home() {
                             // Show Profile if user is logged in
                             <button
                                 onClick={() => setShowDropdown(!showDropdown)}
-                                className="w-12 h-12 rounded-full bg-white/20 text-purple-500 flex items-center justify-center text-lg font-bold hover:bg-white/30 transition-all"
+                                className="w-12 h-12 rounded-full bg-white/20 text-purple-500 flex items-center justify-center text-lg font-bold hover:bg-white/30 transition-all cursor-pointer"
                             >
                                 {getInitial()}
                             </button>
