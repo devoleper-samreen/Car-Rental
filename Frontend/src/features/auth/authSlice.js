@@ -35,9 +35,13 @@ export const authSlice = createSlice({
             state.adminToken = null;
             localStorage.removeItem('adminToken');
             localStorage.removeItem('admin');
+        },
+        userProfile: (state, action) => {
+            state.user = action.payload.user;
+            localStorage.setItem('user', JSON.stringify(action.payload.user));
         }
     }
 })
 
-export const { userLogin, adminLogin, userLogout, adminLogout } = authSlice.actions;
+export const { userLogin, adminLogin, userLogout, adminLogout, userProfile } = authSlice.actions;
 export default authSlice.reducer;

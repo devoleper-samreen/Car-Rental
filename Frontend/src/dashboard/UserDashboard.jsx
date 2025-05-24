@@ -1,14 +1,47 @@
-import React from 'react';
 import { FaMapMarkerAlt, FaEnvelope, FaPhone, FaCarSide, FaUserShield } from 'react-icons/fa';
 import { FaCar } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { userLogout } from '../features/auth/authSlice.js';
 import { useNavigate } from 'react-router-dom';
+import { Modal, Button, Form, Input } from 'antd';
+import { useState } from 'react';
+import AxiosInstance from "../apiManager/axiosInstance"
+import { toast } from 'react-hot-toast';
+import { userProfile } from '../features/auth/authSlice.js';
 
 const UserDashboard = () => {
     const navigate = useNavigate();
     const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [form] = Form.useForm();
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    }
+
+    const handleOk = async () => {
+        try {
+            const values = await form.validateFields();
+            console.log('Form values:', values);
+            const response = await AxiosInstance.put('/api/user/update-profile', values);
+            console.log(response);
+            dispatch(userProfile({
+                user: response.data.user,
+            }));
+
+            form.resetFields();
+            setIsModalOpen(false);
+            toast.success(response.data.message);
+        } catch (error) {
+            console.log('Validation Failed:', error);
+        }
+    };
+
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    }
 
     const handleLogout = () => {
         dispatch(userLogout());
@@ -67,7 +100,9 @@ const UserDashboard = () => {
                                 <span>{user?.phone || '9897469714'}</span>
                             </div>
                         </div>
-                        <button className="w-full mt-4 bg-gradient-to-tr from-purple-500 to-violet-600 text-white py-2 rounded-xl shadow hover:scale-105 transition-transform cursor-pointer">
+                        <button className="w-full mt-4 bg-gradient-to-tr from-purple-500 to-violet-600 text-white py-2 rounded-xl shadow hover:scale-105 transition-transform cursor-pointer"
+                            onClick={showModal}
+                        >
                             Update Profile
                         </button>
                     </div>
@@ -83,6 +118,51 @@ const UserDashboard = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* Modal for Updating Profile */}
+                <Modal
+                    title="Update Profile"
+                    centered
+                    open={isModalOpen}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                    okText="Submit"
+                    cancelText="Cancel"
+                >
+                    <Form
+                        form={form}
+                        layout="vertical"
+                        name="userForm"
+                    >
+                        <Form.Item
+                            label="Name"
+                            name="name"
+                            rules={[{ required: true, message: 'Please enter your name!' }]}
+                        >
+                            <Input placeholder="Enter your name" />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Email"
+                            name="email"
+                            rules={[
+                                { required: true, message: 'Please enter your email!' },
+                                { type: 'email', message: 'Invalid email!' }
+                            ]}
+                        >
+                            <Input placeholder="Enter your email" />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Phone"
+                            name="phone"
+                            rules={[{ required: true, message: 'Please enter your phone number!' }]}
+                        >
+                            <Input placeholder="Enter your phone number" />
+                        </Form.Item>
+                    </Form>
+                </Modal>
+
             </div>
         </div>
     );
