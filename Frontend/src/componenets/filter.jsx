@@ -1,7 +1,16 @@
+import React, { useState } from 'react';
+
 const CarFilterSidebar = ({ onCategoryChange, onPriceRangeChange }) => {
+    const [price, setPrice] = useState(2000);
     const carTypes = [
         'suv', 'sedan', 'hatchback'
     ];
+
+    const handlePriceChange = (e) => {
+        const value = e.target.value;
+        setPrice(value);
+        onPriceRangeChange?.(value);
+    };
 
     return (
         <div className="w-full bg-white p-8 space-y-6">
@@ -75,6 +84,20 @@ const CarFilterSidebar = ({ onCategoryChange, onPriceRangeChange }) => {
                     />
                     <span>All</span>
                 </label>
+            </div>
+
+            {/* Price Filter with Slider */}
+            <div>
+                <h3 className="text-sm font-semibold text-gray-500 mb-2">MAX PRICE</h3>
+                <input
+                    type="range"
+                    min="100"
+                    max="5000"
+                    value={price}
+                    onChange={handlePriceChange}
+                    className="w-full accent-blue-500"
+                />
+                <p className="text-sm text-gray-700 mt-1">Up to ${price}</p>
             </div>
         </div>
     );
