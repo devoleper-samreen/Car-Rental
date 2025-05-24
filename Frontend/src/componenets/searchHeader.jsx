@@ -2,10 +2,18 @@ import React from 'react'
 import { IoSearch } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
-function searchHeader() {
+function searchHeader({ onSearch }) {
     const Navigate = useNavigate();
     const { user } = useSelector((state) => state.auth);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+        onSearch(value);
+    };
 
     return (
         <div className='max-w-[1100px] mx-auto h-24 bg-white flex items-center p-4 justify-between'>
@@ -21,6 +29,8 @@ function searchHeader() {
                 <div>
                     <input type="text" placeholder='Search by name'
                         className='outline-none border-none w-[300px]'
+                        value={searchTerm}
+                        onChange={handleInputChange}
                     />
                 </div>
             </div>

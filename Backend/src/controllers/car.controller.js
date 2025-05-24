@@ -214,6 +214,8 @@ export const getCarImage = async (req, res) => {
 
 export const searchCars = async (req, res) => {
     try {
+        console.log('req.query', req.query);
+
         const { search, priceRange, category, sortBy = 'name', page = 1, limit = 15 } = req.query;
 
         const query = {};
@@ -242,13 +244,13 @@ export const searchCars = async (req, res) => {
         if (priceRange) {
             switch (priceRange) {
                 case 'under50':
-                    query.price = { $lt: 50 };
+                    query.pricePerDay = { $lt: 50 };
                     break;
                 case '50to100':
-                    query.price = { $gte: 50, $lt: 100 };
+                    query.pricePerDay = { $gte: 50, $lt: 100 };
                     break;
                 case 'over100':
-                    query.price = { $gte: 100 };
+                    query.pricePerDay = { $gte: 100 };
                     break;
             }
         }
@@ -257,21 +259,21 @@ export const searchCars = async (req, res) => {
 
         switch (sortBy) {
             case 'price-low':
-                sortOptions = { price: 1 };
+                sortOptions = { pricePerDay: 1 };
                 break;
             case 'price-high':
-                sortOptions = { price: -1 };
+                sortOptions = { pricePerDay: -1 };
                 break;
             default:
-                sortOptions: { name: 1 };
+                sortOptions = { name: 1 };
         }
 
         const skip = (page - 1) * limit;
 
         const cars = await Car.find(query)
-            .sort(sortOptions).
-            skip(skip).
-            limit(limit);
+            .sort(sortOptions)
+            .skip(skip)
+            .limit(limit);
 
         const totalItems = await Car.countDocuments(query);
         const categories = await Car.distinct('category', query);
@@ -285,7 +287,7 @@ export const searchCars = async (req, res) => {
                 brand: car.brand,
                 model: car.model,
                 year: car.year,
-                price: car.price,
+                price: car.pricePerDay,
                 image: car.image,
                 features: car.features,
                 transmission: car.transmission,
