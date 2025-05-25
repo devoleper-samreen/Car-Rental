@@ -3,12 +3,17 @@ import SearchHeader from '../componenets/searchHeader';
 import CarFilterSidebar from '../componenets/filter';
 import CarCard from '../componenets/CarCard';
 import AxiosInstance from '../apiManager/axiosInstance';
+import { Modal, Button, Descriptions, Image } from 'antd';
+
 
 function CarList() {
     const [filteredCars, setFilteredCars] = useState([]);
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState('');
     const [priceRange, setPriceRange] = useState('');
+
+    const [selectedCar, setSelectedCar] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
     // Fetch filtered cars from backend
     const fetchFilteredCars = async () => {
@@ -35,6 +40,17 @@ function CarList() {
         fetchFilteredCars();
     }, [search, category, priceRange]);
 
+    const handleCarClick = (car) => {
+        setSelectedCar(car);
+        setModalVisible(true);
+    };
+
+    const handlePayNow = () => {
+        console.log('Pay Now clicked for:', selectedCar);
+        // Navigate or open payment page
+    };
+
+
     return (
         <div className="bg-white">
             {/* Search bar */}
@@ -55,7 +71,7 @@ function CarList() {
                 {/* Car listing */}
                 <main className="bg-[#F6F7F9] w-[78%] h-[calc(100vh-100px)] overflow-auto">
                     <div className="grid grid-cols-3 gap-4 p-10">
-                        {filteredCars.length > 0 ? (
+                        {/* {filteredCars.length > 0 ? (
                             filteredCars.map((car) => (
                                 <CarCard
                                     key={car.id}
@@ -68,11 +84,73 @@ function CarList() {
                             ))
                         ) : (
                             <p className="text-gray-500 col-span-3">No cars found.</p>
+                        )} */}
+
+                        {filteredCars.length > 0 ? (
+                            filteredCars.map((car) => (
+                                <div key={car.id} className="relative bg-white rounded-xl shadow-lg">
+                                    <CarCard
+                                        image={car.image}
+                                        title={car.name}
+                                        price={car.price}
+                                        transmission={car.transmission}
+                                        features={car.features}
+                                    />
+                                    <Button
+                                        type="primary"
+                                        className="absolute bottom-4 left-1/2 -translate-x-1/2"
+                                        onClick={() => handleCarClick(car)}
+                                    >
+                                        Book Now
+                                    </Button>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-gray-500 col-span-3">No cars found.</p>
                         )}
                     </div>
                 </main>
-            </div>
-        </div>
+            </div >
+
+            {/* Modal */}
+            < Modal
+                title="Car Booking Summary"
+                open={modalVisible}
+                onCancel={() => setModalVisible(false)
+                }
+                footer={null}
+            >
+                {selectedCar && (
+                    <>
+                        <Image
+                            src={selectedCar.image}
+                            alt={selectedCar.name}
+                            width="100%"
+                            style={{ borderRadius: 10, marginBottom: 20 }}
+                        />
+
+                        <Descriptions bordered column={1}>
+                            <Descriptions.Item label="Car Name">{selectedCar.name}</Descriptions.Item>
+                            <Descriptions.Item label="Model">{selectedCar.model || 'N/A'}</Descriptions.Item>
+                            <Descriptions.Item label="Pickup Date">2025-05-28</Descriptions.Item>
+                            <Descriptions.Item label="Dropoff Date">2025-05-31</Descriptions.Item>
+                            <Descriptions.Item label="Total Days">3</Descriptions.Item>
+                            <Descriptions.Item label="Total Price">₹{selectedCar.price * 3}</Descriptions.Item>
+                        </Descriptions>
+
+                        <Button
+                            type="primary"
+                            block
+                            size="large"
+                            style={{ marginTop: 20 }}
+                            onClick={handlePayNow}
+                        >
+                            Pay Now
+                        </Button>
+                    </>
+                )}
+            </Modal >
+        </div >
     );
 }
 

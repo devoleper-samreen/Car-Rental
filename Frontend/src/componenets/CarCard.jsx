@@ -3,7 +3,7 @@ import { FaCar } from "react-icons/fa";
 
 const CarCard = ({ image, title, price, transmission, features }) => {
     return (
-        <div className="max-w-xs bg-white rounded-2xl overflow-hidden shadow-md">
+        <div className="max-w-xs bg-white rounded-2xl overflow-hidden mb-5">
             {/* Image & Price Badge */}
             <div className="relative">
                 <img
@@ -38,9 +38,9 @@ const CarCard = ({ image, title, price, transmission, features }) => {
                 </div>
 
                 {/* Button */}
-                <button className="cursor-pointer w-full bg-indigo-600 text-white text-sm py-2 rounded-xl hover:bg-indigo-700 transition">
+                {/* <button className="cursor-pointer w-full bg-indigo-600 text-white text-sm py-2 rounded-xl hover:bg-indigo-700 transition">
                     Book Now
-                </button>
+                </button> */}
             </div>
         </div>
     );
