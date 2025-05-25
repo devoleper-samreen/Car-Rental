@@ -3,7 +3,8 @@ import SearchHeader from '../componenets/searchHeader';
 import CarFilterSidebar from '../componenets/filter';
 import CarCard from '../componenets/CarCard';
 import AxiosInstance from '../apiManager/axiosInstance';
-import { Modal, Button, Descriptions, Image } from 'antd';
+import { Modal, Button, Descriptions, Image, Input } from 'antd';
+import PickupDropoffForm from '../componenets/PickupDropoffForm';
 
 
 function CarList() {
@@ -119,6 +120,7 @@ function CarList() {
                 onCancel={() => setModalVisible(false)
                 }
                 footer={null}
+                width={700}
             >
                 {selectedCar && (
                     <>
@@ -132,12 +134,20 @@ function CarList() {
                         <Descriptions bordered column={1}>
                             <Descriptions.Item label="Car Name">{selectedCar.name}</Descriptions.Item>
                             <Descriptions.Item label="Model">{selectedCar.model || 'N/A'}</Descriptions.Item>
-                            <Descriptions.Item label="Pickup Date">2025-05-28</Descriptions.Item>
-                            <Descriptions.Item label="Dropoff Date">2025-05-31</Descriptions.Item>
-                            <Descriptions.Item label="Total Days">3</Descriptions.Item>
-                            <Descriptions.Item label="Total Price">₹{selectedCar.price * 3}</Descriptions.Item>
+                            <Descriptions.Item label="Brand">{selectedCar.brand || 'N/A'}</Descriptions.Item>
+                            <Descriptions.Item label="Transmission">{selectedCar.transmission}</Descriptions.Item>
+                            <Descriptions.Item label="Price per Day">₹{selectedCar.price}</Descriptions.Item>
+                            {/*add fuel type */}
+                            <Descriptions.Item label="Fuel Type">{selectedCar.fuelType || 'N/A'}</Descriptions.Item>
+                            <Descriptions.Item label="Features">
+                                <ul className="list-disc pl-5">
+                                    {selectedCar.features.map((feature, index) => (
+                                        <li key={index}>{feature}</li>
+                                    ))}
+                                </ul>
+                            </Descriptions.Item>
                         </Descriptions>
-
+                        <PickupDropoffForm />
                         <Button
                             type="primary"
                             block
