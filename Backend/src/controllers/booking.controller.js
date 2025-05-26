@@ -7,10 +7,10 @@ export const createBooking = async (req, res) => {
         const userId = req.user._id;
         const carId = req.params.id;
 
-        const { startDate, endDate, pickupTime, dropoffTime, pickupLocation, dropoffLocation, totalAmount } = req.body;
+        const { pickupDate, pickupTime, pickupLocation, dropoffDate, dropoffTime, dropoffLocation, totalAmount } = req.body;
 
-        const start = new Date(startDate);
-        const end = new Date(endDate);
+        const start = new Date(pickupDate);
+        const end = new Date(dropoffDate);
 
         if (isNaN(start.getTime()) || isNaN(end.getTime())) {
             return res.status(400).json({
@@ -47,12 +47,12 @@ export const createBooking = async (req, res) => {
             status: { $nin: ["cancelled", "completed"] },
             $or: [
                 {
-                    startDate: { $lte: end },
-                    endDate: { $gte: start }
+                    pickupDate: { $lte: end },
+                    dropoffDate: { $gte: start }
                 },
                 {
-                    startDate: { $gte: start, $lte: end },
-                    endDate: { $gte: start, $lte: end }
+                    pickupDate: { $gte: start, $lte: end },
+                    dropoffDate: { $gte: start, $lte: end }
                 }
             ]
         });
@@ -67,8 +67,8 @@ export const createBooking = async (req, res) => {
         const booking = await Booking.create({
             carId,
             userId,
-            startDate,
-            endDate,
+            pickupDate,
+            dropoffDate,
             pickupTime,
             dropoffTime,
             pickupLocation,

@@ -11,11 +11,7 @@ const bookingSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    startDate: {
-        type: Date,
-        required: true
-    },
-    endDate: {
+    pickupDate: {
         type: Date,
         required: true
     },
@@ -23,11 +19,15 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    dropoffTime: {
+    pickupLocation: {
         type: String,
         required: true
     },
-    pickupLocation: {
+    dropoffDate: {
+        type: Date,
+        required: true
+    },
+    dropoffTime: {
         type: String,
         required: true
     },
