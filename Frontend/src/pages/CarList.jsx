@@ -15,6 +15,16 @@ function CarList() {
 
     const [selectedCar, setSelectedCar] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
+    // New state
+    const [pickupDropoffData, setPickupDropoffData] = useState({
+        pickupLocation: '',
+        pickupDate: '',
+        pickupTime: '',
+        dropoffLocation: '',
+        dropoffDate: '',
+        dropoffTime: '',
+    });
+
 
     // Fetch filtered cars from backend
     const fetchFilteredCars = async () => {
@@ -147,7 +157,7 @@ function CarList() {
                                 </ul>
                             </Descriptions.Item>
                         </Descriptions>
-                        <PickupDropoffForm />
+                        <PickupDropoffForm onChange={(data) => setPickupDropoffData(data)} />
                         <Button
                             type="primary"
                             block

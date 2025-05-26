@@ -1,6 +1,25 @@
 import { FaExchangeAlt } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
 
-const PickupDropoffForm = () => {
+const PickupDropoffForm = ({ onChange }) => {
+    const [formData, setFormData] = useState({
+        pickupLocation: '',
+        pickupDate: '',
+        pickupTime: '',
+        dropoffLocation: '',
+        dropoffDate: '',
+        dropoffTime: '',
+    });
+
+    useEffect(() => {
+        onChange(formData); // send data to parent whenever it changes
+    }, [formData]);
+
+
+    const handleChange = (field, value) => {
+        setFormData((prev) => ({ ...prev, [field]: value }));
+    };
+
     return (
         <div className="flex justify-center items-center">
             <div className="flex items-center space-x-4 p-6 rounded-2xl shadow-md bg-white">
@@ -16,6 +35,8 @@ const PickupDropoffForm = () => {
                             <span className="text-sm font-semibold text-gray-800">Location</span>
                             <input
                                 type="text"
+                                value={formData.pickupLocation}
+                                onChange={(e) => handleChange('pickupLocation', e.target.value)}
                                 placeholder="Enter city"
                                 className="text-sm mt-1 px-3 py-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
                             />
@@ -26,6 +47,8 @@ const PickupDropoffForm = () => {
                             <span className="text-sm font-semibold text-gray-800">Date</span>
                             <input
                                 type="date"
+                                value={formData.pickupDate}
+                                onChange={(e) => handleChange('pickupDate', e.target.value)}
                                 className="text-sm mt-1 px-3 py-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
                             />
                         </div>
@@ -35,6 +58,8 @@ const PickupDropoffForm = () => {
                             <span className="text-sm font-semibold text-gray-800">Time</span>
                             <input
                                 type="time"
+                                value={formData.pickupTime}
+                                onChange={(e) => handleChange('pickupTime', e.target.value)}
                                 className="text-sm mt-1 px-3 py-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
                             />
                         </div>
@@ -60,6 +85,8 @@ const PickupDropoffForm = () => {
                             <span className="text-sm font-semibold text-gray-800">Location</span>
                             <input
                                 type="text"
+                                value={formData.dropoffLocation}
+                                onChange={(e) => handleChange('dropoffLocation', e.target.value)}
                                 placeholder="Enter city"
                                 className="text-sm mt-1 px-3 py-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
                             />
@@ -70,6 +97,8 @@ const PickupDropoffForm = () => {
                             <span className="text-sm font-semibold text-gray-800">Date</span>
                             <input
                                 type="date"
+                                value={formData.dropoffDate}
+                                onChange={(e) => handleChange('dropoffDate', e.target.value)}
                                 className="text-sm mt-1 px-3 py-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
                             />
                         </div>
@@ -79,6 +108,8 @@ const PickupDropoffForm = () => {
                             <span className="text-sm font-semibold text-gray-800">Time</span>
                             <input
                                 type="time"
+                                value={formData.dropoffTime}
+                                onChange={(e) => handleChange('dropoffTime', e.target.value)}
                                 className="text-sm mt-1 px-3 py-2 border border-gray-300 rounded-md outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
                             />
                         </div>
