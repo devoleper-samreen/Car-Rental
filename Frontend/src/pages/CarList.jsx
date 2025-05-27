@@ -58,8 +58,27 @@ function CarList() {
 
     const handlePayNow = () => {
         console.log('Pay Now clicked for:', selectedCar);
-        // Navigate or open payment page
+        console.log('Pickup/Dropoff Data:', pickupDropoffData);
     };
+
+    //calculate the total price based on the pickup and dropoff dates
+    const calculateTotalDaysAndPrice = () => {
+        const pickupDate = new Date(pickupDropoffData.pickupDate);
+        const dropoffDate = new Date(pickupDropoffData.dropoffDate);
+        const diffTime = Math.abs(dropoffDate - pickupDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const totalPrice = diffDays * selectedCar.price;
+        return { totalPrice, totalDays: diffDays };
+    };
+
+    useEffect(() => {
+        if (selectedCar) {
+            const { totalPrice, totalDays } = calculateTotalDaysAndPrice();
+            console.log('Total Price:', totalPrice);
+            console.log('Total Days:', totalDays);
+        }
+    }
+        , [pickupDropoffData, selectedCar]);
 
 
     return (
@@ -158,6 +177,16 @@ function CarList() {
                             </Descriptions.Item>
                         </Descriptions>
                         <PickupDropoffForm onChange={(data) => setPickupDropoffData(data)} />
+                        <div className="mt-4">
+                            <h3 className="text-lg font-semibold">Total Days:</h3>
+                            <p className="text-xl font-bold">{calculateTotalDaysAndPrice().totalDays}</p>
+                        </div>
+
+                        <div className="mt-4">
+                            <h3 className="text-lg font-semibold">Total Price:</h3>
+                            <p className="text-xl font-bold">₹{
+                                calculateTotalDaysAndPrice().totalPrice}</p>
+                        </div>
                         <Button
                             type="primary"
                             block
