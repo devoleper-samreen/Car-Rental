@@ -17,6 +17,8 @@ import Setting from "./pages/Setting"
 import { Toaster } from "react-hot-toast";
 import UserProtectedRoute from './UserProtectedRoute'
 import AdminProtectedRoute from './AdminProtectedRoute'
+import PaymentSuccess from './pages/PaymentSuccess'
+import PaymentFailed from './pages/PaymentFail'
 
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/list' element={<CarList />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/payment-failed" element={<PaymentFailed />} />
 
           //User
           <Route path='/user/login' element={<UserLogin />} />

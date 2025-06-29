@@ -5,6 +5,7 @@ import CarCard from '../componenets/CarCard';
 import AxiosInstance from '../apiManager/axiosInstance';
 import { Modal, Button, Descriptions, Image, Input } from 'antd';
 import PickupDropoffForm from '../componenets/PickupDropoffForm';
+import { loadStripe } from '@stripe/stripe-js';
 
 
 function CarList() {
@@ -56,12 +57,6 @@ function CarList() {
         setModalVisible(true);
     };
 
-    const handlePayNow = () => {
-        console.log('Pay Now clicked for:', selectedCar);
-        console.log('Pickup/Dropoff Data:', pickupDropoffData);
-    };
-
-    //calculate the total price based on the pickup and dropoff dates
     const calculateTotalDaysAndPrice = () => {
         const pickupDate = new Date(pickupDropoffData.pickupDate);
         const dropoffDate = new Date(pickupDropoffData.dropoffDate);
@@ -192,9 +187,9 @@ function CarList() {
                             block
                             size="large"
                             style={{ marginTop: 20 }}
-                            onClick={handlePayNow}
+                            
                         >
-                            Pay Now
+                            Book Now
                         </Button>
                     </>
                 )}
