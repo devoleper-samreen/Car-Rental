@@ -3,11 +3,12 @@ import { Car } from "../models/car.model.js";
 
 export const createBooking = async (req, res) => {
     try {
+        console.log(req.user);
+        console.log(req.body);
 
         const userId = req.user._id;
-        const carId = req.params.id;
 
-        const { pickupDate, pickupTime, pickupLocation, dropoffDate, dropoffTime, dropoffLocation, totalAmount } = req.body;
+        const { pickupDate, pickupTime, pickupLocation, dropoffDate, dropoffTime, dropoffLocation, totalAmount, carId } = req.body;
 
         const start = new Date(pickupDate);
         const end = new Date(dropoffDate);

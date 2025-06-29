@@ -5,7 +5,7 @@ import CarCard from '../componenets/CarCard';
 import AxiosInstance from '../apiManager/axiosInstance';
 import { Modal, Button, Descriptions, Image, Input } from 'antd';
 import PickupDropoffForm from '../componenets/PickupDropoffForm';
-import { loadStripe } from '@stripe/stripe-js';
+import toast from 'react-hot-toast';
 
 
 function CarList() {
@@ -74,7 +74,34 @@ function CarList() {
         }
     }
         , [pickupDropoffData, selectedCar]);
+    
+    const bookNow = async () => {
+        if (!pickupDropoffData.pickupLocation || !pickupDropoffData.dropoffLocation
+            || !pickupDropoffData.pickupDate || !pickupDropoffData.dropoffDate) {
+            toast.error('Please fill in all pickup and dropoff details.');
+            return;
+        }
 
+        try {
+            const { totalPrice } = calculateTotalDaysAndPrice();
+
+            const bookingData = {
+                carId: selectedCar.id,
+                ...pickupDropoffData,
+                totalAmount: totalPrice,
+            };
+            console.log('Booking car with data:', bookingData);
+
+            const response = await AxiosInstance.post(`/api/booking/`, bookingData);
+            console.log('Booking response:', response);
+            toast.success('Car booked successfully!');
+            setModalVisible(false);
+            setSelectedCar(null);
+        } catch (error) {
+            console.error('Error booking car:', error);
+            toast.error('Something went wrong. Please try again.');
+        }
+    };
 
     return (
         <div className="bg-white">
@@ -187,6 +214,7 @@ function CarList() {
                             block
                             size="large"
                             style={{ marginTop: 20 }}
+                            onClick={bookNow}
                             
                         >
                             Book Now

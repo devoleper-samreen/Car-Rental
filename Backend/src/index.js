@@ -7,6 +7,7 @@ import { connectDB } from './utils/db.js';
 import userRoutes from './routes/user.route.js';
 import adminRoutes from './routes/admin.route.js';
 import carRoutes from './routes/car.route.js';
+import bookingRoutes from './routes/booking.route.js';
 
 dotenv.config();
 const app = express();
@@ -33,6 +34,7 @@ app.get('/', (req, res) => {
 app.use('/api/user', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/car', carRoutes);
+app.use('/api/booking', bookingRoutes);
 
 // Connect to database
 connectDB();
