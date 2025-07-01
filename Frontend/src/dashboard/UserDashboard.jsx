@@ -8,6 +8,7 @@ import { useState } from 'react';
 import AxiosInstance from "../apiManager/axiosInstance"
 import { toast } from 'react-hot-toast';
 import { userProfile } from '../features/auth/authSlice.js';
+import React, { useEffect } from 'react';
 
 const UserDashboard = () => {
     const navigate = useNavigate();
@@ -15,6 +16,8 @@ const UserDashboard = () => {
     const dispatch = useDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [form] = Form.useForm();
+    const [userBookings, setUserBookings] = useState([]);
+
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -47,6 +50,21 @@ const UserDashboard = () => {
         dispatch(userLogout());
         navigate('/user/login');
     };
+
+    useEffect(() => {
+        const fetchBookings = async () => {
+            try {
+                const response = await AxiosInstance.get('/api/booking/');
+                console.log("Bookings:", response.data.data);
+                setUserBookings(response.data.data);
+            } catch (err) {
+                console.error('Error fetching user bookings:', err);
+            }
+        };
+    
+        fetchBookings();
+    }, []);
+    
 
     return (
         <div className="min-h-screen bg-[#f4f6fa] p-6">
