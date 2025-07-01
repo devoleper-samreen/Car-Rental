@@ -12,7 +12,6 @@ import ManageCars from "./pages/ManageCars"
 import ManageUsers from "./pages/ManageUsers"
 import Dashboard from "./pages/Dashboard"
 import ManageBookings from "./pages/ManageBookings"
-import Reports from "./pages/Reports"
 import Setting from "./pages/Setting"
 import { Toaster } from "react-hot-toast";
 import UserProtectedRoute from './UserProtectedRoute'
@@ -57,7 +56,6 @@ function App() {
             <Route path='manage-cars' element={<ManageCars />} />
             <Route path='manage-users' element={<ManageUsers />} />
             <Route path='manage-bookings' element={<ManageBookings />} />
-            <Route path='reports' element={<Reports />} />
             <Route path='setting' element={<Setting />} />
           </Route>
 

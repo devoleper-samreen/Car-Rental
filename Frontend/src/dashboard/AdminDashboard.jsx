@@ -41,10 +41,7 @@ function AdminDashboard() {
                             }`}>
                             <FaUsers className="mr-3" /> Manage Users
                         </li>
-                        <li onClick={() => navigate('/admin/dashboard/reports')} className={`flex items-center px-4 py-3 cursor-pointer ${isActive('/admin/dashboard/reports') ? 'bg-indigo-600' : 'hover:bg-indigo-600'
-                            }`}>
-                            <FaChartPie className="mr-3" /> Reports
-                        </li>
+                        
                         <li onClick={() => navigate('/admin/dashboard/setting')} className={`flex items-center px-4 py-3 cursor-pointer ${isActive('/admin/dashboard/setting') ? 'bg-indigo-600' : 'hover:bg-indigo-600'
                             }`}>
                             <FaCog className="mr-3" /> Settings
