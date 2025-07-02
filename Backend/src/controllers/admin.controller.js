@@ -333,3 +333,44 @@ export const getAllBookings = async (req, res) => {
     }
 }
 
+export const changeBookingStatus = async (req, res) => {
+    try {
+        console.log('I am entering changeBookingStatus');
+        const { bookingId } = req.params;
+        const { status } = req.body;
+
+        if (!bookingId || !status) {
+            return res.status(400).json({
+                success: false,
+                message: 'Booking ID and status are required'
+            });
+        }
+
+        const booking = await Booking.findById(bookingId);
+
+        if (!booking) {
+            return res.status(404).json({
+                success: false,
+                message: 'Booking not found'
+            });
+        }
+
+        booking.status = status;
+        await booking.save();
+
+        return res.status(200).json({
+            success: true,
+            message: 'Booking status updated successfully',
+            booking
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Something went wrong'
+        });
+    }
+
+}
+

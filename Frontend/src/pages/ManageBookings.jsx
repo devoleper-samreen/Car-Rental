@@ -22,7 +22,25 @@ const ManageBookings = () => {
   };
 
   const handleStatusChange = async (bookingId, newStatus) => {
-    //TODO: Implement status change logic
+    console.log("Changing status for booking:", bookingId, "to", newStatus);
+    try {
+      const response = await axiosInstance.put(
+        `/api/admin/update-booking/${bookingId}`,
+        {
+          status: newStatus,
+        }
+      );
+
+      if (response.data.success) {
+        toast.success("Booking status updated successfully");
+        fetchAllBookings(); // Refresh bookings after update
+      } else {
+        toast.error("Failed to update booking status");
+      }
+    } catch (error) {
+      console.error("Error updating booking status:", error);
+      toast.error("Failed to update booking status");
+    }
   };
 
   useEffect(() => {
@@ -76,15 +94,21 @@ const ManageBookings = () => {
                   <span className="inline-flex items-center">
                     <select
                       value={b.status}
-                      onChange={(e) => {
-                        // Handle status change logic here
-                        console.log("Status changed to:", e.target.value);
-                      }}
-                      className="border rounded px-2 py-1 text-sm"
+                      onChange={(e) =>
+                        handleStatusChange(b._id, e.target.value)
+                      }
+                      className={`border rounded px-2 py-1 text-sm ${
+                        b.status === "confirmed" || b.status === "cancelled"
+                          ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                          : ""
+                      }`}
+                      disabled={
+                        b.status === "confirmed" || b.status === "cancelled"
+                      }
                     >
-                      <option value="Confirmed">Confirmed</option>
-                      <option value="Cancelled">Cancelled</option>
-                      <option value="Pending">Pending</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="cancelled">Cancelled</option>
+                      <option value="pending">Pending</option>
                     </select>
                   </span>
                 </td>
