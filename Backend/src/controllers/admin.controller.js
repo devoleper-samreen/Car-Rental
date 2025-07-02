@@ -1,5 +1,6 @@
 import { Admin } from "../models/admin.model.js";
 import { generateToken } from "../utils/jwt.js";
+import { User } from "../models/user.model.js";
 
 export const registerAdmin = async (req, res) => {
     try {
@@ -232,6 +233,35 @@ export const getAdminProfile = async (req, res) => {
             message: 'Something went wrong'
         })
 
+    }
+}
+
+export const getAllUsers = async (req, res) => {
+    try {
+        console.log('I am entering getAllUsers');
+
+        const users = await User.find().select('-password -__v')
+
+        if (!users || users.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'No users found'
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Users fetched successfully',
+            users
+        })
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Something went wrong'
+        })
+        
     }
 }
 
