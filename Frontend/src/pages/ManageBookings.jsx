@@ -1,41 +1,32 @@
-import React, { useEffect, useState } from 'react';
-
-const dummyBookings = [
-  {
-    _id: 'B001',
-    car: 'Toyota Fortuner',
-    customer: 'Samreen Malik',
-    startDate: '2025-06-28',
-    endDate: '2025-07-01',
-    amount: 7200,
-    status: 'Confirmed',
-  },
-  {
-    _id: 'B002',
-    car: 'Maruti Swift',
-    customer: 'Azam',
-    startDate: '2025-07-02',
-    endDate: '2025-07-04',
-    amount: 3000,
-    status: 'Cancelled',
-  },
-  {
-    _id: 'B003',
-    car: 'Honda City',
-    customer: 'Mithun',
-    startDate: '2025-07-05',
-    endDate: '2025-07-07',
-    amount: 5000,
-    status: 'Confirmed',
-  },
-];
+import { useEffect, useState } from "react";
+import axiosInstance from "../apiManager/axiosInstance";
+import { toast } from "react-hot-toast";
 
 const ManageBookings = () => {
   const [bookings, setBookings] = useState([]);
 
+  const fetchAllBookings = async () => {
+    try {
+      const response = await axiosInstance.get("/api/admin/all-bookings");
+      console.log("Fetched bookings:", response.data);
+
+      if (response.data.success) {
+        setBookings(response.data.bookings);
+      } else {
+        toast.error("Failed to fetch bookings");
+      }
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+      toast.error("Failed to fetch bookings");
+    }
+  };
+
+  const handleStatusChange = async (bookingId, newStatus) => {
+    //TODO: Implement status change logic
+  };
+
   useEffect(() => {
-    // TODO: Replace with real API
-    setBookings(dummyBookings);
+    fetchAllBookings();
   }, []);
 
   return (
@@ -52,27 +43,49 @@ const ManageBookings = () => {
               <th className="p-3">Dates</th>
               <th className="p-3">Amount</th>
               <th className="p-3">Status</th>
+              <th className="p-3">Actions</th>
             </tr>
           </thead>
           <tbody>
             {bookings.map((b) => (
               <tr key={b._id} className="border-t">
-                <td className="p-3 font-medium">{b._id}</td>
-                <td className="p-3">{b.car}</td>
-                <td className="p-3">{b.customer}</td>
                 <td className="p-3">
-                  {new Date(b.startDate).toLocaleDateString()} - {new Date(b.endDate).toLocaleDateString()}
+                  {/*want to show half booking id*/}
+                  {b._id.slice(0, 4)}...{b._id.slice(-3)}
                 </td>
-                <td className="p-3">₹{b.amount}</td>
+                <td className="p-3">{b.carId.name}</td>
+                <td className="p-3">{b.userId.name}</td>
                 <td className="p-3">
+                  {new Date(b.pickupDate).toLocaleDateString()} -{" "}
+                  {new Date(b.dropoffDate).toLocaleDateString()}
+                </td>
+                <td className="p-3">₹{b.totalAmount}</td>
+                <td>
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                      b.status === 'Confirmed'
-                        ? 'bg-green-100 text-green-600'
-                        : 'bg-red-100 text-red-600'
+                      b.status === "Confirmed"
+                        ? "bg-green-100 text-green-600"
+                        : "bg-red-100 text-red-600"
                     }`}
                   >
                     {b.status}
+                  </span>
+                </td>
+                <td className="p-3">
+                  {/* want a dropdown to change status */}
+                  <span className="inline-flex items-center">
+                    <select
+                      value={b.status}
+                      onChange={(e) => {
+                        // Handle status change logic here
+                        console.log("Status changed to:", e.target.value);
+                      }}
+                      className="border rounded px-2 py-1 text-sm"
+                    >
+                      <option value="Confirmed">Confirmed</option>
+                      <option value="Cancelled">Cancelled</option>
+                      <option value="Pending">Pending</option>
+                    </select>
                   </span>
                 </td>
               </tr>
@@ -81,10 +94,10 @@ const ManageBookings = () => {
         </table>
 
         {/* Pagination (optional) */}
-        <div className="flex justify-end items-center p-4 border-t">
+        {/* <div className="flex justify-end items-center p-4 border-t">
           <button className="px-4 py-1 border rounded mr-2">Previous</button>
           <button className="px-4 py-1 border rounded">Next</button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

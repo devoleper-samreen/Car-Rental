@@ -1,6 +1,7 @@
 import { Admin } from "../models/admin.model.js";
 import { generateToken } from "../utils/jwt.js";
 import { User } from "../models/user.model.js";
+import { Booking } from "../models/booking.model.js";
 
 export const registerAdmin = async (req, res) => {
     try {
@@ -292,6 +293,35 @@ export const banUser = async (req, res) => {
             success: true,
             message: 'User banned successfully',
             user
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Something went wrong'
+        });
+    }
+}
+
+export const getAllBookings = async (req, res) => {
+    try {
+        //carId AND userId KO POPULATE KARNA HAIN
+        const bookings = await Booking.find()
+            .populate('carId', 'name')
+            .populate('userId', 'name');
+
+        if (!bookings || bookings.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'No bookings found'
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Bookings fetched successfully',
+            bookings
         });
 
     } catch (error) {

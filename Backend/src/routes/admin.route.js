@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerAdmin, loginAdmin, getAdminProfile, updatePassword, updatedProfile, getAllUsers, banUser } from "../controllers/admin.controller.js";
+import { registerAdmin, loginAdmin, getAdminProfile, updatePassword, updatedProfile, getAllUsers, banUser, getAllBookings } from "../controllers/admin.controller.js";
 import { verifyAdmin } from "../middleware/verifyAdmin.js"
 
 const router = express.Router();
@@ -11,6 +11,7 @@ router.put('/update-password', verifyAdmin, updatePassword)
 router.put('/update-profile', verifyAdmin, updatedProfile)
 router.get('/all-users', verifyAdmin, getAllUsers)
 router.patch('/ban-user', verifyAdmin, banUser)
+router.get('/all-bookings', verifyAdmin, getAllBookings)
 
 
 export default router

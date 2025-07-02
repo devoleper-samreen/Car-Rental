@@ -68,7 +68,7 @@ const ManageUsers = () => {
             {users.map((user, idx) => (
               <tr key={user._id} className="border-t">
                 <td className="p-3 flex items-center gap-2">
-                  <div className="bg-gray-200 text-gray-700 font-bold rounded-full w-8 h-8 flex items-center justify-center">
+                  <div className="bg-gray-200 text-gray-700 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-2">
                     {user.name ? user.name[0].toUpperCase() : "?"}
                   </div>
                   {user.name || "N/A"}
@@ -88,12 +88,7 @@ const ManageUsers = () => {
                   </span>
                 </td>
                 <td className="p-3 space-x-2">
-                  <Link
-                    to={`/admin/user/${user._id}`}
-                    className="text-blue-600 font-medium hover:underline"
-                  >
-                    View Details
-                  </Link>
+                  {/* Ban User */}
                   <button
                     onClick={() => handleBan(user._id)}
                     className="text-red-600 font-medium hover:underline"
