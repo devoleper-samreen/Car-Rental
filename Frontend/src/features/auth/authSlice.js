@@ -39,9 +39,13 @@ export const authSlice = createSlice({
         userProfile: (state, action) => {
             state.user = action.payload.user;
             localStorage.setItem('user', JSON.stringify(action.payload.user));
+        },
+        adminProfile: (state, action) => {
+            state.admin = action.payload.admin;
+            localStorage.setItem('admin', JSON.stringify(action.payload.admin));
         }
     }
 })
 
-export const { userLogin, adminLogin, userLogout, adminLogout, userProfile } = authSlice.actions;
+export const { userLogin, adminLogin, userLogout, adminLogout, userProfile, adminProfile } = authSlice.actions;
 export default authSlice.reducer;

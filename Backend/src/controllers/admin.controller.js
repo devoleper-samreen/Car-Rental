@@ -148,7 +148,10 @@ export const updatePassword = async (req, res) => {
 
 export const updatedProfile = async (req, res) => {
     try {
+        console.log('I am entering updatedProfile');
+
         const { name, email, phone } = req.body
+        console.log("Profile:", name, email, phone);
 
         if (!name || !email || !phone) {
             return res.status(400).json({
