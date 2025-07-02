@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createBooking } from '../controllers/booking.controller.js';
+import { createBooking, getUserBookings } from '../controllers/booking.controller.js';
 import { verifyUser } from '../middleware/verifyUser.js';
 
 const router = express.Router();
@@ -8,6 +8,6 @@ const router = express.Router();
 router.use(verifyUser);
 
 router.post('/', createBooking);
-// router.get('/', getBookings);
+router.get('/', getUserBookings);
 
 export default router;
