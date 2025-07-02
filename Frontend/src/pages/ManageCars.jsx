@@ -104,6 +104,19 @@ function ManageCars() {
     }
   };
 
+  const handleDeleteCar = async (carId) => {
+    try {
+      const response = await AxiosInstance.delete(`/api/car/delete/${carId}`);
+      console.log(response);
+      toast.success("Car deleted successfully");
+      const updatedCars = await getAllCars();
+      setCars(updatedCars);
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to delete car");
+    }
+  };
+
   useEffect(() => {
     const getCars = async () => {
       const cars = await getAllCars();
@@ -168,10 +181,13 @@ function ManageCars() {
                 <td className="px-6 py-3">${car.pricePerDay}</td>
                 <td className="px-6 py-3">{car.transmission}</td>
                 <td className="px-6 py-3 space-x-2">
-                  <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                  <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer">
                     Edit {/* TODO: Implement edit functionality */}
                   </button>
-                  <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+                  <button
+                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
+                    onClick={() => handleDeleteCar(car._id)}
+                  >
                     Delete {/* TODO: Implement delete functionality */}
                   </button>
                 </td>
