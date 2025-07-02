@@ -7,6 +7,7 @@ import {
   getAllCarsByAdmin,
   getAllCars,
   deleteCar,
+  updateCar,
 } from "../controllers/car.controller.js";
 import { verifyAdmin } from "../middleware/verifyAdmin.js";
 import { upload } from "../utils/multer.js";
@@ -20,5 +21,6 @@ router.get("/search", searchCars);
 router.get("/all", verifyAdmin, getAllCarsByAdmin);
 router.get("/all-cars", getAllCars);
 router.delete("/delete/:id", verifyAdmin, deleteCar);
+router.put("/update/:id", verifyAdmin, upload.single("image"), updateCar);
 
 export default router;

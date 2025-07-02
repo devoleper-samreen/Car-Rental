@@ -362,3 +362,57 @@ export const deleteCar = async (req, res) => {
     });
   }
 };
+
+export const updateCar = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const adminId = req.admin._id;
+
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Please add car id",
+      });
+    }
+
+    const car = await Car.findById(id);
+
+    if (!car) {
+      return res.status(404).json({
+        success: false,
+        message: "Car not found",
+      });
+    }
+
+    // if (car.admin.toString() !== adminId) {
+    //   return res.status(403).json({
+    //     success: false,
+    //     message: "You are not authorized to update this car",
+    //   });
+    // }
+
+    const updatedData = req.body;
+
+    if (req.file) {
+      const localFilePath = req.file.path;
+      const carImage = await uploadOnCloudinary(localFilePath);
+      updatedData.image = carImage?.secure_url || "";
+    }
+
+    const updatedCar = await Car.findByIdAndUpdate(id, updatedData, {
+      new: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Car updated successfully",
+      data: updatedCar,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

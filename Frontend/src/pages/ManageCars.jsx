@@ -5,128 +5,136 @@ import { UploadOutlined } from "@ant-design/icons";
 import AxiosInstance from "../apiManager/axiosInstance";
 import toast from "react-hot-toast";
 
-function ManageCars() {
-  const { Option } = Select;
+const { Option } = Select;
 
+const defaultState = {
+  name: "",
+  brand: "",
+  model: "",
+  year: "",
+  pricePerDay: "",
+  seats: "",
+  fuelType: "",
+  transmission: "",
+  category: "",
+  status: "available",
+  features: "",
+};
+
+function ManageCars() {
+  const [editCarId, setEditCarId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [cars, setCars] = useState([]);
-
-  const showModal = () => setIsModalOpen(true);
-  const handleCancel = () => setIsModalOpen(false);
-
   const [image, setImage] = useState(null);
-  const [carData, setCarData] = useState({
-    name: "",
-    brand: "",
-    model: "",
-    year: "",
-    pricePerDay: "",
-    seats: "",
-    fuelType: "",
-    transmission: "",
-    category: "",
-    status: "available",
-    features: "",
-  });
+  const [carData, setCarData] = useState({ ...defaultState });
+
+  const showModal = (car = null) => {
+    if (car) {
+      setCarData({
+        name: car.name,
+        brand: car.brand,
+        model: car.model,
+        year: car.year,
+        pricePerDay: car.pricePerDay,
+        seats: car.seats,
+        fuelType: car.fuelType,
+        transmission: car.transmission,
+        category: car.category,
+        status: car.status,
+        features: car.features?.join(", ") || "",
+      });
+      setEditCarId(car._id);
+    } else {
+      setCarData({ ...defaultState });
+      setEditCarId(null);
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setEditCarId(null);
+    setImage(null);
+    setCarData({ ...defaultState });
+  };
 
   const handleChange = (e) => {
-    setCarData({
-      ...carData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setCarData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const getAllCars = async () => {
+    try {
+      const res = await AxiosInstance.get("/api/car/all-cars");
+      return res.data.cars;
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to fetch cars");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("name", carData.name);
-    formData.append("brand", carData.brand);
-    formData.append("model", carData.model);
-    formData.append("year", carData.year);
-    formData.append("pricePerDay", carData.pricePerDay);
-    formData.append("seats", carData.seats);
-    formData.append("fuelType", carData.fuelType);
-    formData.append("transmission", carData.transmission);
-    formData.append("category", carData.category);
-    formData.append("status", carData.status);
 
-    carData.features
-      .split(",")
-      .map((f) => f.trim())
-      .forEach((feature) => {
-        formData.append("features[]", feature);
-      });
+    Object.entries(carData).forEach(([key, value]) => {
+      if (key === "features") {
+        value
+          .split(",")
+          .map((f) => f.trim())
+          .forEach((f) => formData.append("features[]", f));
+      } else {
+        formData.append(key, value);
+      }
+    });
 
-    formData.append("image", image);
-    console.log("formData : ", formData);
+    if (image) formData.append("image", image);
+
     try {
       setIsLoading(true);
-      const response = await AxiosInstance.post("/api/car/add", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log(response);
-      toast.success(response.data.message);
 
-      setCarData({
-        name: "",
-        brand: "",
-        model: "",
-        year: "",
-        pricePerDay: "",
-        seats: "",
-        fuelType: "",
-        transmission: "",
-        category: "",
-        status: "available",
-        features: "",
-      });
-      setImage(null);
-      const updatedCars = await getAllCars();
-      setCars(updatedCars);
-      setIsModalOpen(false);
-    } catch (error) {
+      const res = editCarId
+        ? await AxiosInstance.put(`/api/car/update/${editCarId}`, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          })
+        : await AxiosInstance.post("/api/car/add", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+
+      toast.success(res.data.message);
+      const updated = await getAllCars();
+      setCars(updated);
+      handleCancel();
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.response?.data?.message || "Something went wrong");
+    } finally {
       setIsLoading(false);
-      console.log(error);
-      toast.error(error.response.data.message);
     }
   };
 
-  const getAllCars = async () => {
+  const handleDeleteCar = async (id) => {
     try {
-      const response = await AxiosInstance.get("/api/car/all-cars");
-      console.log(response);
-      return response.data.cars;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleDeleteCar = async (carId) => {
-    try {
-      const response = await AxiosInstance.delete(`/api/car/delete/${carId}`);
-      console.log(response);
+      await AxiosInstance.delete(`/api/car/delete/${id}`);
       toast.success("Car deleted successfully");
-      const updatedCars = await getAllCars();
-      setCars(updatedCars);
-    } catch (error) {
-      console.log(error);
+      const updated = await getAllCars();
+      setCars(updated);
+    } catch (err) {
+      console.log(err);
       toast.error("Failed to delete car");
     }
   };
 
   useEffect(() => {
-    const getCars = async () => {
-      const cars = await getAllCars();
-      setCars(cars);
-    };
-    getCars();
+    (async () => {
+      const initialCars = await getAllCars();
+      setCars(initialCars);
+    })();
   }, []);
 
   return (
-    <div className="h-[calc(100vh-150px)] overflow-auto p-4" style={{}}>
+    <div className="h-[calc(100vh-150px)] overflow-auto p-4">
       <div className="flex justify-between items-center mb-12">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">
@@ -137,7 +145,7 @@ function ManageCars() {
           </p>
         </div>
         <button
-          onClick={showModal}
+          onClick={() => showModal()}
           className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md shadow-md cursor-pointer"
         >
           <FaPlus /> Add New Vehicle
@@ -148,26 +156,16 @@ function ManageCars() {
         <table className="min-w-full bg-white text-sm text-left text-gray-500">
           <thead className="bg-gray-100 text-xs text-gray-700 uppercase">
             <tr>
-              <th scope="col" className="px-6 py-4">
-                Image
-              </th>
-              <th scope="col" className="px-6 py-4">
-                Name
-              </th>
-              <th scope="col" className="px-6 py-4">
-                Price/Day
-              </th>
-              <th scope="col" className="px-6 py-4">
-                Transmission
-              </th>
-              <th scope="col" className="px-6 py-4">
-                Actions
-              </th>
+              <th className="px-6 py-4">Image</th>
+              <th className="px-6 py-4">Name</th>
+              <th className="px-6 py-4">Price/Day</th>
+              <th className="px-6 py-4">Transmission</th>
+              <th className="px-6 py-4">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {cars?.map((car, index) => (
-              <tr key={index} className="border-b hover:bg-gray-50">
+            {cars?.map((car) => (
+              <tr key={car._id} className="border-b hover:bg-gray-50">
                 <td className="px-6 py-3">
                   <img
                     src={car.image}
@@ -181,14 +179,20 @@ function ManageCars() {
                 <td className="px-6 py-3">${car.pricePerDay}</td>
                 <td className="px-6 py-3">{car.transmission}</td>
                 <td className="px-6 py-3 space-x-2">
-                  <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer">
-                    Edit {/* TODO: Implement edit functionality */}
+                  <button
+                    onClick={() => showModal(car)}
+                    className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer"
+                  >
+                    Edit
                   </button>
                   <button
+                    onClick={() =>
+                      window.confirm("Delete this car?") &&
+                      handleDeleteCar(car._id)
+                    }
                     className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
-                    onClick={() => handleDeleteCar(car._id)}
                   >
-                    Delete {/* TODO: Implement delete functionality */}
+                    Delete
                   </button>
                 </td>
               </tr>
@@ -198,28 +202,27 @@ function ManageCars() {
       </div>
 
       <Modal
-        title="Add New Car"
+        title={editCarId ? "Edit Car" : "Add New Car"}
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
       >
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {/* TODO: Add form validation */}
           <Input
-            placeholder="Enter car name"
+            placeholder="Car name"
             name="name"
             value={carData.name}
             onChange={handleChange}
           />
           <div className="flex gap-4 mt-6">
             <Input
-              placeholder="Enter brand"
+              placeholder="Brand"
               name="brand"
               value={carData.brand}
               onChange={handleChange}
             />
             <Input
-              placeholder="Enter model"
+              placeholder="Model"
               name="model"
               value={carData.model}
               onChange={handleChange}
@@ -227,13 +230,13 @@ function ManageCars() {
           </div>
           <div className="flex gap-4">
             <Input
-              placeholder="Enter year"
+              placeholder="Year"
               name="year"
               value={carData.year}
               onChange={handleChange}
             />
             <Input
-              placeholder="Enter price per day"
+              placeholder="Price per day"
               name="pricePerDay"
               value={carData.pricePerDay}
               onChange={handleChange}
@@ -245,13 +248,12 @@ function ManageCars() {
             value={carData.seats}
             onChange={handleChange}
           />
-
           <div className="flex gap-4 mt-6">
             <Select
               className="w-full"
-              placeholder="Select fuel type"
+              placeholder="Fuel type"
               value={carData.fuelType}
-              onChange={(value) => setCarData({ ...carData, fuelType: value })}
+              onChange={(v) => setCarData({ ...carData, fuelType: v })}
             >
               <Option value="petrol">Petrol</Option>
               <Option value="diesel">Diesel</Option>
@@ -260,23 +262,20 @@ function ManageCars() {
             </Select>
             <Select
               className="w-full"
+              placeholder="Transmission"
               value={carData.transmission}
-              onChange={(value) =>
-                setCarData({ ...carData, transmission: value })
-              }
-              placeholder="Select transmission"
+              onChange={(v) => setCarData({ ...carData, transmission: v })}
             >
               <Option value="automatic">Automatic</Option>
               <Option value="manual">Manual</Option>
             </Select>
           </div>
-
           <div className="flex gap-4">
             <Select
               className="w-full"
-              placeholder="Select category"
+              placeholder="Category"
               value={carData.category}
-              onChange={(value) => setCarData({ ...carData, category: value })}
+              onChange={(v) => setCarData({ ...carData, category: v })}
             >
               <Option value="suv">SUV</Option>
               <Option value="sedan">Sedan</Option>
@@ -284,10 +283,9 @@ function ManageCars() {
             </Select>
             <Select
               className="w-full"
-              value={carData.status}
-              onChange={(value) => setCarData({ ...carData, status: value })}
               placeholder="Status"
-              defaultValue="available"
+              value={carData.status}
+              onChange={(v) => setCarData({ ...carData, status: v })}
             >
               <Option value="available">Available</Option>
               <Option value="unavailable">Unavailable</Option>
@@ -326,13 +324,9 @@ function ManageCars() {
             </button>
             <button
               type="submit"
-              className="bg-indigo-600 text-white px-4 py-2 rounded cursor-pointer"
+              className="bg-indigo-600 text-white px-4 py-2 rounded"
             >
-              {isLoading ? (
-                <span className="loader">loading...</span>
-              ) : (
-                <span>Add Car</span>
-              )}
+              {isLoading ? "Loading..." : editCarId ? "Update Car" : "Add Car"}
             </button>
           </div>
         </form>
