@@ -39,7 +39,7 @@ const ManageBookings = () => {
   }, []);
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="p-6 max-w-6xl mx-auto h-[calc(100vh-150px)] overflow-auto">
       <h2 className="text-2xl font-bold mb-4">Manage Bookings</h2>
 
       <div className="bg-white rounded-md shadow overflow-x-auto">
