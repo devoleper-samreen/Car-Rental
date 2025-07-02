@@ -108,7 +108,10 @@ export const loginAdmin = async (req, res) => {
 
 export const updatePassword = async (req, res) => {
     try {
+        console.log('I am entering updatePassword');
+        
         const { currPassword, newPassword } = req.body
+        console.log("currPassword:", currPassword, 'newPassword:', newPassword);
 
         if (!currPassword || !newPassword) {
             return res.status(400).json({
@@ -122,7 +125,7 @@ export const updatePassword = async (req, res) => {
         const isMatched = await user.matchPassword(currPassword)
 
         if (!isMatched) {
-            return req.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: "current password is not correct"
             })

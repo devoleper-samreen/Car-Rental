@@ -15,8 +15,8 @@ const Setting = () => {
   });
 
   const [password, setPassword] = useState({
-    current: "",
-    newPass: "",
+    currPassword: "",
+    newPassword: "",
     confirmPass: "",
   });
 
@@ -45,14 +45,29 @@ const Setting = () => {
     }
   };
 
-  const handlePasswordSubmit = (e) => {
+  const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    if (password.newPass !== password.confirmPass) {
-      alert("Passwords don't match");
+    if (password.newPassword !== password.confirmPass) {
+      toast.error("Passwords don't match");
       return;
     }
-    // TODO: Connect with API
-    console.log("Changing Password:", password);
+
+    try {
+      const response = await axiosInstance.put(
+        "/api/admin/update-password",
+        password
+      );
+      console.log(response);
+      toast.success(response.data.message);
+      setPassword({
+        currPassword: "",
+        newPassword: "",
+        confirmPass: "",
+      });
+    } catch (error) {
+      console.error("Error changing password:", error);
+      toast.error("Failed to change password");
+    }
   };
 
   return (
@@ -98,7 +113,7 @@ const Setting = () => {
           </div>
           <button
             type="submit"
-            className="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700"
+            className="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700 cursor-pointer"
           >
             Update Profile
           </button>
@@ -116,8 +131,8 @@ const Setting = () => {
             <label className="block text-sm mb-1">Current Password</label>
             <input
               type="password"
-              name="current"
-              value={password.current}
+              name="currPassword"
+              value={password.currPassword}
               onChange={handlePasswordChange}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring"
             />
@@ -126,8 +141,8 @@ const Setting = () => {
             <label className="block text-sm mb-1">New Password</label>
             <input
               type="password"
-              name="newPass"
-              value={password.newPass}
+              name="newPassword"
+              value={password.newPassword}
               onChange={handlePasswordChange}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring"
             />
@@ -144,7 +159,7 @@ const Setting = () => {
           </div>
           <button
             type="submit"
-            className="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700"
+            className="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700 cursor-pointer"
           >
             Change Password
           </button>
