@@ -10,6 +10,7 @@ import {
   getAllBookings,
   changeBookingStatus,
   getDashboardStats,
+  getRevenueTrends,
 } from "../controllers/admin.controller.js";
 import { verifyAdmin } from "../middleware/verifyAdmin.js";
 
@@ -25,5 +26,6 @@ router.patch("/ban-user", verifyAdmin, banUser);
 router.get("/all-bookings", verifyAdmin, getAllBookings);
 router.put("/update-booking/:bookingId", verifyAdmin, changeBookingStatus);
 router.get("/dashboard-stats", verifyAdmin, getDashboardStats);
+router.get("/revenue-trends", verifyAdmin, getRevenueTrends);
 
 export default router;

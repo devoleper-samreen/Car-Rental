@@ -440,3 +440,52 @@ export const getDashboardStats = async (req, res) => {
     });
   }
 };
+
+export const getRevenueTrends = async (req, res) => {
+  try {
+    const currentMonth = moment().startOf("month");
+    const sixMonthsAgo = moment().subtract(5, "months").startOf("month");
+
+    const revenues = await Booking.aggregate([
+      {
+        $match: {
+          status: "confirmed",
+          pickupDate: {
+            $gte: sixMonthsAgo.toDate(),
+            $lte: currentMonth.clone().endOf("month").toDate(),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $month: "$pickupDate" },
+          total: { $sum: "$totalAmount" },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+    ]);
+
+    // Format result into full month names
+    const months = [];
+    for (let i = 5; i >= 0; i--) {
+      const m = moment().subtract(i, "months");
+      const match = revenues.find((r) => r._id === m.month() + 1);
+      months.push({
+        month: m.format("MMM"),
+        revenue: match ? match.total : 0,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: months,
+    });
+  } catch (error) {
+    console.error("Error fetching revenue trends", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Failed to fetch revenue trends" });
+  }
+};

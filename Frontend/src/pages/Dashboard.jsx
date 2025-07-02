@@ -7,105 +7,12 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useEffect, useState } from "react";
-import AxiosInstance from "../apiManager/axiosInstance"; // Adjust the import path as necessary
-
-const stats = [
-  {
-    label: "Total Users",
-    value: 29,
-    change: +3.6,
-    icon: "👥",
-    color: "bg-blue-100 text-blue-600",
-  },
-  {
-    label: "Total Cars",
-    value: 25,
-    change: -7.4,
-    icon: "🚗",
-    color: "bg-purple-100 text-purple-600",
-  },
-  {
-    label: "Active Bookings",
-    value: 18,
-    change: -52.6,
-    icon: "📅",
-    color: "bg-green-100 text-green-600",
-  },
-  {
-    label: "Monthly Revenue",
-    value: 0,
-    change: -100,
-    icon: "📈",
-    color: "bg-indigo-100 text-indigo-600",
-  },
-];
-
-const revenueData = [
-  { month: "Apr", revenue: 11200 },
-  { month: "May", revenue: 800 },
-  { month: "Jun", revenue: 0 },
-];
-
-const recentBookings = [
-  {
-    name: "Unknown",
-    car: "tata",
-    price: "$50",
-    status: "confirmed",
-    dates: "5/24/2025 - 5/25/2025",
-  },
-  {
-    name: "Samreen Malik",
-    car: "tata",
-    price: "$100",
-    status: "pending",
-    dates: "5/25/2025 - 5/27/2025",
-  },
-  {
-    name: "Shiv Shukla",
-    car: "Maruti",
-    price: "$2",
-    status: "confirmed",
-    dates: "5/21/2025 - 5/23/2025",
-  },
-  {
-    name: "John Doe",
-    car: "tata",
-    price: "$50",
-    status: "confirmed",
-    dates: "5/13/2025 - 5/14/2025",
-  },
-  {
-    name: "Jane Doe",
-    car: "tata",
-    price: "$100",
-    status: "confirmed",
-    dates: "5/13/2025 - 5/15/2025",
-  },
-  {
-    name: "Ak",
-    car: "KIA",
-    price: "$90",
-    status: "confirmed",
-    dates: "5/10/2025 - 5/13/2025",
-  },
-  {
-    name: "Ak",
-    car: "tata",
-    price: "$100",
-    status: "confirmed",
-    dates: "5/10/2025 - 5/12/2025",
-  },
-  {
-    name: "Ak",
-    car: "BMW",
-    price: "$114",
-    status: "confirmed",
-    dates: "4/29/2025 - 5/2/2025",
-  },
-];
+import AxiosInstance from "../apiManager/axiosInstance";
 
 function Dashboard() {
+  const [revenueData, setRevenueData] = useState([]);
+  const [recentBookings, setRecentBookings] = useState([]);
+
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalCars: 0,
@@ -118,6 +25,18 @@ function Dashboard() {
       revenue: 0,
     },
   });
+
+  const fetchBookings = async () => {
+    try {
+      const response = await AxiosInstance.get("/api/admin/all-bookings");
+      console.log("Recent Bookings Response:", response.data);
+      if (response.data.success) {
+        setRecentBookings(response.data.bookings);
+      }
+    } catch (error) {
+      console.error("Failed to load recent bookings", error);
+    }
+  };
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -133,7 +52,21 @@ function Dashboard() {
       }
     };
 
+    const fetchRevenue = async () => {
+      try {
+        const res = await AxiosInstance.get("/api/admin/revenue-trends");
+        console.log("Revenue Trends Response:", res.data);
+        if (res.data.success) {
+          setRevenueData(res.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to load revenue data", err);
+      }
+    };
+
     fetchStats();
+    fetchRevenue();
+    fetchBookings();
   }, []);
 
   return (
@@ -262,11 +195,11 @@ function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {recentBookings.map((b, i) => (
+              {recentBookings?.map((b, i) => (
                 <tr key={i} className="border-t">
-                  <td className="p-2">{b.name}</td>
-                  <td className="p-2">{b.car}</td>
-                  <td className="p-2">{b.price}</td>
+                  <td className="p-2">{b.userId.name}</td>
+                  <td className="p-2">{b.carId.name}</td>
+                  <td className="p-2">{b.totalAmount}</td>
                   <td className="p-2">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-semibold ${
@@ -278,7 +211,10 @@ function Dashboard() {
                       {b.status}
                     </span>
                   </td>
-                  <td className="p-2">{b.dates}</td>
+                  <td className="p-2">
+                    {new Date(b.pickupDate).toLocaleDateString()} -{" "}
+                    {new Date(b.dropoffDate).toLocaleDateString()}
+                  </td>
                 </tr>
               ))}
             </tbody>
