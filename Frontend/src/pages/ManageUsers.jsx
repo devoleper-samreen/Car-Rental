@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axiosInstance from "../apiManager/axiosInstance";
+import AxiosInstance from "../apiManager/axiosInstance";
 import { toast } from "react-hot-toast";
 
 const ManageUsers = () => {
@@ -8,7 +8,7 @@ const ManageUsers = () => {
 
   const fetchedAllUsers = async () => {
     try {
-      const response = await axiosInstance.get("/api/admin/all-users");
+      const response = await AxiosInstance.get("/api/admin/all-users");
       console.log("Fetched users:", response.data);
 
       if (response.data.success) {
@@ -26,10 +26,21 @@ const ManageUsers = () => {
     fetchedAllUsers();
   }, []);
 
-  const handleBan = (id) => {
+  const handleBan = async (id) => {
     if (window.confirm("Are you sure you want to ban this user?")) {
       console.log("Ban user:", id);
-      // TODO: API call
+
+      const response = await AxiosInstance.patch(`/api/admin/ban-user`, {
+        userId: id,
+      });
+      console.log(response);
+
+      if (response.data.success) {
+        toast.success("User banned successfully");
+        fetchedAllUsers();
+      } else {
+        toast.error("Failed to ban user");
+      }
     }
   };
 
@@ -65,7 +76,14 @@ const ManageUsers = () => {
                 <td className="p-3">{user.email}</td>
                 <td className="p-3">{calculateJoinDate(user.createdAt)}</td>
                 <td className="p-3">
-                  <span className="bg-green-100 text-green-600 text-xs font-medium px-2 py-1 rounded-full">
+                  {/* if user Banned bg will be red */}
+                  <span
+                    className={`bg-${
+                      user.status === "Banned" ? "red" : "green"
+                    }-100 text-${
+                      user.status === "Banned" ? "red" : "green"
+                    }-600 text-xs font-medium px-2 py-1 rounded-full`}
+                  >
                     {user.status}
                   </span>
                 </td>
