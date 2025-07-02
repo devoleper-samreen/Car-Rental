@@ -1,59 +1,231 @@
-
-
-import React from 'react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import { useEffect, useState } from "react";
+import AxiosInstance from "../apiManager/axiosInstance"; // Adjust the import path as necessary
 
 const stats = [
-  { label: 'Total Users', value: 29, change: +3.6, icon: '👥', color: 'bg-blue-100 text-blue-600' },
-  { label: 'Total Cars', value: 25, change: -7.4, icon: '🚗', color: 'bg-purple-100 text-purple-600' },
-  { label: 'Active Bookings', value: 18, change: -52.6, icon: '📅', color: 'bg-green-100 text-green-600' },
-  { label: 'Monthly Revenue', value: 0, change: -100, icon: '📈', color: 'bg-indigo-100 text-indigo-600' },
+  {
+    label: "Total Users",
+    value: 29,
+    change: +3.6,
+    icon: "👥",
+    color: "bg-blue-100 text-blue-600",
+  },
+  {
+    label: "Total Cars",
+    value: 25,
+    change: -7.4,
+    icon: "🚗",
+    color: "bg-purple-100 text-purple-600",
+  },
+  {
+    label: "Active Bookings",
+    value: 18,
+    change: -52.6,
+    icon: "📅",
+    color: "bg-green-100 text-green-600",
+  },
+  {
+    label: "Monthly Revenue",
+    value: 0,
+    change: -100,
+    icon: "📈",
+    color: "bg-indigo-100 text-indigo-600",
+  },
 ];
 
 const revenueData = [
-  { month: 'Apr', revenue: 11200 },
-  { month: 'May', revenue: 800 },
-  { month: 'Jun', revenue: 0 },
+  { month: "Apr", revenue: 11200 },
+  { month: "May", revenue: 800 },
+  { month: "Jun", revenue: 0 },
 ];
 
 const recentBookings = [
-  { name: 'Unknown', car: 'tata', price: '$50', status: 'confirmed', dates: '5/24/2025 - 5/25/2025' },
-  { name: 'Samreen Malik', car: 'tata', price: '$100', status: 'pending', dates: '5/25/2025 - 5/27/2025' },
-  { name: 'Shiv Shukla', car: 'Maruti', price: '$2', status: 'confirmed', dates: '5/21/2025 - 5/23/2025' },
-  { name: 'John Doe', car: 'tata', price: '$50', status: 'confirmed', dates: '5/13/2025 - 5/14/2025' },
-  { name: 'Jane Doe', car: 'tata', price: '$100', status: 'confirmed', dates: '5/13/2025 - 5/15/2025' },
-  { name: 'Ak', car: 'KIA', price: '$90', status: 'confirmed', dates: '5/10/2025 - 5/13/2025' },
-  { name: 'Ak', car: 'tata', price: '$100', status: 'confirmed', dates: '5/10/2025 - 5/12/2025' },
-  { name: 'Ak', car: 'BMW', price: '$114', status: 'confirmed', dates: '4/29/2025 - 5/2/2025' },
+  {
+    name: "Unknown",
+    car: "tata",
+    price: "$50",
+    status: "confirmed",
+    dates: "5/24/2025 - 5/25/2025",
+  },
+  {
+    name: "Samreen Malik",
+    car: "tata",
+    price: "$100",
+    status: "pending",
+    dates: "5/25/2025 - 5/27/2025",
+  },
+  {
+    name: "Shiv Shukla",
+    car: "Maruti",
+    price: "$2",
+    status: "confirmed",
+    dates: "5/21/2025 - 5/23/2025",
+  },
+  {
+    name: "John Doe",
+    car: "tata",
+    price: "$50",
+    status: "confirmed",
+    dates: "5/13/2025 - 5/14/2025",
+  },
+  {
+    name: "Jane Doe",
+    car: "tata",
+    price: "$100",
+    status: "confirmed",
+    dates: "5/13/2025 - 5/15/2025",
+  },
+  {
+    name: "Ak",
+    car: "KIA",
+    price: "$90",
+    status: "confirmed",
+    dates: "5/10/2025 - 5/13/2025",
+  },
+  {
+    name: "Ak",
+    car: "tata",
+    price: "$100",
+    status: "confirmed",
+    dates: "5/10/2025 - 5/12/2025",
+  },
+  {
+    name: "Ak",
+    car: "BMW",
+    price: "$114",
+    status: "confirmed",
+    dates: "4/29/2025 - 5/2/2025",
+  },
 ];
 
 function Dashboard() {
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalCars: 0,
+    activeBookings: 0,
+    monthlyRevenue: 0,
+    changePercent: {
+      users: 0,
+      cars: 0,
+      bookings: 0,
+      revenue: 0,
+    },
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await AxiosInstance.get("/api/admin/dashboard-stats");
+        console.log("Dashboard Stats Response:", response.data);
+
+        if (response.data.success) {
+          setStats(response.data.stats);
+        }
+      } catch (err) {
+        console.error("Failed to load dashboard stats", err);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   return (
     <div className="p-6 max-w-7xl mx-auto h-[calc(100vh-150px)] overflow-auto">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Dashboard Overview</h2>
-        <span className="text-sm text-gray-500">Last updated: 7/1/2025</span>
+        <span className="text-sm text-gray-500">
+          Last updated: {new Date().toLocaleDateString()}
+        </span>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        {stats.map((stat, idx) => (
-          <div key={idx} className="bg-white p-4 rounded shadow flex items-center gap-4">
-            <div className={`text-2xl p-2 rounded-full ${stat.color}`}>{stat.icon}</div>
-            <div>
-              <p className="text-sm text-gray-600">{stat.label}</p>
-              <h4 className="text-xl font-bold">{stat.value}</h4>
-              <p
-                className={`text-xs ${
-                  stat.change > 0 ? 'text-green-500' : 'text-red-500'
-                }`}
-              >
-                {stat.change > 0 ? '+' : ''}
-                {stat.change}%
-              </p>
-            </div>
+        <div className="bg-white p-4 rounded shadow flex items-center gap-4">
+          <div className="text-2xl p-2 rounded-full bg-blue-100 text-blue-600">
+            👥
           </div>
-        ))}
+          <div>
+            <p className="text-sm text-gray-600">Total Users</p>
+            <h4 className="text-xl font-bold">{stats.totalUsers}</h4>
+            <p
+              className={`text-xs ${
+                stats.changePercent?.users >= 0
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {stats.changePercent?.users >= 0 ? "+" : ""}
+              {stats.changePercent?.users}%
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded shadow flex items-center gap-4">
+          <div className="text-2xl p-2 rounded-full bg-purple-100 text-purple-600">
+            🚗
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Total Cars</p>
+            <h4 className="text-xl font-bold">{stats.totalCars}</h4>
+            <p
+              className={`text-xs ${
+                stats.changePercent?.cars >= 0
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {stats.changePercent?.cars >= 0 ? "+" : ""}
+              {stats.changePercent?.cars}%
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded shadow flex items-center gap-4">
+          <div className="text-2xl p-2 rounded-full bg-green-100 text-green-600">
+            📅
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Active Bookings</p>
+            <h4 className="text-xl font-bold">{stats.activeBookings}</h4>
+            <p
+              className={`text-xs ${
+                stats.changePercent.bookings >= 0
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {stats.changePercent.bookings >= 0 ? "+" : ""}
+              {stats.changePercent.bookings}%
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded shadow flex items-center gap-4">
+          <div className="text-2xl p-2 rounded-full bg-indigo-100 text-indigo-600">
+            📈
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Monthly Revenue</p>
+            <h4 className="text-xl font-bold">₹{stats.monthlyRevenue}</h4>
+            <p
+              className={`text-xs ${
+                stats.changePercent.revenue >= 0
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {stats.changePercent.revenue >= 0 ? "+" : ""}
+              {stats.changePercent.revenue}%
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Revenue Chart */}
@@ -98,9 +270,9 @@ function Dashboard() {
                   <td className="p-2">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        b.status === 'confirmed'
-                          ? 'bg-green-100 text-green-600'
-                          : 'bg-yellow-100 text-yellow-600'
+                        b.status === "confirmed"
+                          ? "bg-green-100 text-green-600"
+                          : "bg-yellow-100 text-yellow-600"
                       }`}
                     >
                       {b.status}
