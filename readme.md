@@ -1,30 +1,56 @@
-# 🚗 Car Rental Backend
+# 🚗 CarsNow – Car Rental Web App
 
-This is the backend API for a Car Rental Website. It is built using **Node.js**, **Express**, and **MongoDB**. It handles user authentication, car listings, bookings, payments, and admin operations.
+CarsNow is a full-stack **MERN** project where users can **browse** **search**, **filter**, and **book rental cars**, and admins can **manage the car listings** with full CRUD operations admin have dedicated admin panel. Built with modern tech like React,Tailwind CSS, Node.js, Express, MongoDB, Docker, and JWT Auth.
 
-## 🛠️ Tech Stack
+![CarsNow Banner](./assets/banner.PNG) <!-- 🔁 Add your project banner -->
 
-- Node.js
-- Express.js
-- MongoDB & Mongoose
-- JWT (Authentication)
-- bcrypt (Password hashing)
-- dotenv (Environment variables)
-- Cors
-- Nodemon (Development)
+---
 
+## 🌟 Features
 
-## 🚀 Features
+### 🔐 Authentication
 
-- User Signup / Login with JWT
-- Role-based access (user/admin)
-- Add / Update / Delete Cars (admin)
-- Search cars by name and category
-- Check Cars Availablity by date
-- Book a Car
-- Cancel Booking
-- View Booking History
-- Payment Gateway
+- Register/Login for both Users & Admins
+- JWT token-based secure auth
+- Protected routes for admin features
+
+### 👥 For Users
+
+- View all cars with details
+- Filter cars by category (SUV, Sedan, Hatchback, etc.)
+- Filter cars by price range
+- Car booking system
+- View past bookings
+- Update personal profile
+
+![Cars Listing](./assets/user.PNG)
+
+### 🛠️ Admin Panel
+
+- Add/Edit/Delete cars
+- View all bookings made by users
+- Have all user list and can banned user
+- Dashboard for see stats and revenue
+
+---
+
+![CarsNow Banner](./assets/admin1.PNG)
+![CarsNow Banner](./assets/admin2.PNG)
+
+## 🖥️ Tech Stack
+
+| Technology   | Role               |
+| ------------ | ------------------ |
+| React        | Frontend framework |
+| Node.js      | Backend runtime    |
+| Express.js   | REST API + routing |
+| MongoDB      | NoSQL database     |
+| Mongoose     | ODM for MongoDB    |
+| JWT          | Authentication     |
+| Docker       | Containerization   |
+| Tailwind CSS | Styling            |
+
+---
 
 ## ⚙️ Installation
 
@@ -33,3 +59,5 @@ git clone https://github.com/devoleper-samreen/Car-Rental.git
 
 
 
+
+```
