@@ -2,6 +2,8 @@
 
 CarsNow is a full-stack **MERN** project where users can **browse** **search**, **filter**, and **book rental cars**, and admins can **manage the car listings** with full CRUD operations admin have dedicated admin panel. Built with modern tech like React,Tailwind CSS, Node.js, Express, MongoDB, Docker, and JWT Auth.
 
+---
+
 ![CarsNow Banner](./Frontend/src/assets/banner.PNG)
 
 ---
@@ -23,7 +25,11 @@ CarsNow is a full-stack **MERN** project where users can **browse** **search**, 
 - View past bookings
 - Update personal profile
 
+---
+
 ![Cars Listing](./Frontend/src/assets/user.PNG)
+
+---
 
 ### 🛠️ Admin Panel
 
@@ -35,6 +41,9 @@ CarsNow is a full-stack **MERN** project where users can **browse** **search**, 
 ---
 
 ![Admin Dashboard](./Frontend/src/assets/admin1.PNG)
+
+---
+
 ![Car Management](./Frontend/src/assets/admin2.PNG)
 
 ## 🖥️ Tech Stack
