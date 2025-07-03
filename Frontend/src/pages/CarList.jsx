@@ -6,8 +6,12 @@ import AxiosInstance from "../apiManager/axiosInstance";
 import { Modal, Button, Descriptions, Image } from "antd";
 import PickupDropoffForm from "../componenets/PickupDropoffForm";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function CarList() {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
   const [filteredCars, setFilteredCars] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
@@ -83,6 +87,13 @@ function CarList() {
       !pickupDropoffData.dropoffDate
     ) {
       toast.error("Please fill in all pickup and dropoff details.");
+      return;
+    }
+
+    if (!user) {
+      toast.error("Please log in to book a car.");
+      setModalVisible(false);
+      navigate("/user/login");
       return;
     }
 
