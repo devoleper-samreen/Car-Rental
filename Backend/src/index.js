@@ -18,8 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin:
-      "https://car-rental-devoleper-samreens-projects.vercel.app/, http://localhost:5173",
+    origin: "https://car-rental-devoleper-samreens-projects.vercel.app/",
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
