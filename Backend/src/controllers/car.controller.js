@@ -257,12 +257,12 @@ export const searchCars = async (req, res) => {
       query.pricePerDay = { $lte: priceRange };
     }
 
-    if (priceRange === "under50") {
-      query.pricePerDay = { $lte: 50 };
-    } else if (priceRange === "50to100") {
-      query.pricePerDay = { $gte: 50, $lte: 100 };
-    } else if (priceRange === "over100") {
-      query.pricePerDay = { $gte: 100 };
+    if (priceRange === "under1000") {
+      query.pricePerDay = { $lte: 1000 };
+    } else if (priceRange === "1000to2000") {
+      query.pricePerDay = { $gte: 1000, $lte: 2000 };
+    } else if (priceRange === "over2000") {
+      query.pricePerDay = { $gte: 2000 };
     }
 
     let sortOptions = {};

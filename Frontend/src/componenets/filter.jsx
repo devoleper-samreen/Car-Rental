@@ -51,31 +51,31 @@ const CarFilterSidebar = ({ onCategoryChange, onPriceRangeChange }) => {
           <input
             type="radio"
             name="price"
-            value="under50"
+            value="under1000"
             onChange={(e) => onPriceRangeChange?.(e.target.value)}
             className="accent-blue-500"
           />
-          <span>Under ₹50</span>
+          <span>Under ₹1000</span>
         </label>
         <label className="flex items-center space-x-2 text-sm text-gray-700 mb-1">
           <input
             type="radio"
             name="price"
-            value="50to100"
+            value="1000to2000"
             onChange={(e) => onPriceRangeChange?.(e.target.value)}
             className="accent-blue-500"
           />
-          <span>₹50 to ₹100</span>
+          <span>₹1000 to ₹2000</span>
         </label>
         <label className="flex items-center space-x-2 text-sm text-gray-700 mb-1">
           <input
             type="radio"
             name="price"
-            value="over100"
+            value="over2000"
             onChange={(e) => onPriceRangeChange?.(e.target.value)}
             className="accent-blue-500"
           />
-          <span>Over ₹100</span>
+          <span>Over ₹2000</span>
         </label>
         <label className="flex items-center space-x-2 text-sm text-gray-700 mt-2">
           <input
