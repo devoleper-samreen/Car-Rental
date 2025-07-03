@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://car-rental-zqe6.onrender.com/api/",
+  baseURL: "https://car-rental-zqe6.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },
