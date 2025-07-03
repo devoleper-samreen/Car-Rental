@@ -103,7 +103,7 @@ function CarList() {
       setSelectedCar(null);
     } catch (error) {
       console.error("Error booking car:", error);
-      toast.error("Something went wrong. Please try again.");
+      toast.error(error.response.data.message || "Failed to book car.");
     }
   };
 
