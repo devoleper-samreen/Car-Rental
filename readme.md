@@ -60,7 +60,6 @@ CarsNow is a full-stack **MERN** project where users can **browse** **search**, 
 | MongoDB      | NoSQL database     |
 | Mongoose     | ODM for MongoDB    |
 | JWT          | Authentication     |
-| Docker       | Containerization   |
 | Tailwind CSS | Styling            |
 
 ---
