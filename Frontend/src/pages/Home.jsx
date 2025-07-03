@@ -58,107 +58,117 @@ function Home() {
         style={{ backgroundImage: `url(${image})` }}
       >
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
 
-        {/* Login Button + Dropdown */}
-        <div className="relative w-full flex justify-end items-center gap-4 p-6 z-20">
+        {/* Header Bar */}
+        <div className="relative z-20 w-full flex justify-between items-center px-8 py-4">
+          {/* Logo */}
           <Link
-            to="/list"
-            className="px-6 py-3 bg-[#778CFF] text-white font-semibold rounded-full shadow-lg hover:bg-[#5c6edc] transition-all"
+            to="/"
+            className="ml-10 text-3xl font-bold text-white tracking-wide drop-shadow-lg hover:text-[#bfc9ff] transition-all"
           >
-            Book Now
+            Cars<span className="text-[#778CFF]">Now</span>
           </Link>
 
-          <div className="relative">
-            {!(user || admin) ? (
-              <button
-                onClick={() => setShowDropdown(!showDropdown)}
-                className="cursor-pointer flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-all duration-300 shadow-lg"
-              >
-                <FaUser />
-                <span className="font-semibold">Login</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => setShowDropdown(!showDropdown)}
-                className="w-12 h-12 rounded-full  bg-[#778CFF] text-white flex items-center justify-center text-lg font-bold hover:bg-[#5c6edc]  transition-all cursor-pointer"
-              >
-                {getInitial()}
-              </button>
-            )}
+          <div className="flex items-center gap-4">
+            <Link
+              to="/list"
+              className="px-6 py-3 bg-[#778CFF] text-white font-semibold rounded-full shadow-lg hover:bg-[#5c6edc] transition-all"
+            >
+              Book Now
+            </Link>
 
-            {showDropdown && (
-              <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-xl shadow-lg py-2 space-y-2 z-30">
-                {!(user || admin) && !user ? (
-                  <>
-                    <Link
-                      to="/user/login"
-                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full"
-                    >
-                      <FaUser className="text-[#4F39F6]" />
-                      User Login
-                    </Link>
-                    <Link
-                      to="/admin/login"
-                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full"
-                    >
-                      <FaUserShield className="text-[#4F39F6]" />
-                      Admin Login
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      to="/user/dashboard"
-                      className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full"
-                    >
-                      <FaUser className="text-[#4F39F6]" />
-                      User Dashboard
-                    </Link>
-                    {admin && (
+            <div className="relative">
+              {!(user || admin) ? (
+                <button
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  className="cursor-pointer flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-all duration-300 shadow-lg"
+                >
+                  <FaUser />
+                  <span className="font-semibold">Login</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  className="w-12 h-12 rounded-full bg-[#778CFF] text-white flex items-center justify-center text-lg font-bold hover:bg-[#5c6edc] transition-all cursor-pointer"
+                >
+                  {getInitial()}
+                </button>
+              )}
+
+              {showDropdown && (
+                <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-xl shadow-lg py-2 space-y-2 z-30">
+                  {!(user || admin) && !user ? (
+                    <>
                       <Link
-                        to="/admin/dashboard"
+                        to="/user/login"
+                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full"
+                      >
+                        <FaUser className="text-[#4F39F6]" />
+                        User Login
+                      </Link>
+                      <Link
+                        to="/admin/login"
                         className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full"
                       >
                         <FaUserShield className="text-[#4F39F6]" />
-                        Admin Dashboard
+                        Admin Login
                       </Link>
-                    )}
-                  </>
-                )}
-              </div>
-            )}
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/user/dashboard"
+                        className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full"
+                      >
+                        <FaUser className="text-[#4F39F6]" />
+                        User Dashboard
+                      </Link>
+                      {admin && (
+                        <Link
+                          to="/admin/dashboard"
+                          className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full"
+                        >
+                          <FaUserShield className="text-[#4F39F6]" />
+                          Admin Dashboard
+                        </Link>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Text Content */}
-        <div className="relative z-10 h-full max-w-[1000px] mx-auto flex flex-col flex-start gap-8">
-          <h1 className="leading-tight text-8xl font-bold text-white">
+        <div className="relative z-10 h-full max-w-[1000px] mx-auto flex flex-col justify-center gap-8 px-6">
+          <h1 className="leading-tight text-7xl md:text-8xl font-bold text-white">
             Drive Your
             <br />
             <span className="text-[#778CFF]">Dreams</span>
           </h1>
 
-          <p className="text-2xl">
+          <p className="text-xl md:text-2xl">
             Experience luxury and comfort with our premium car rental service.{" "}
             <br />
             Choose from our wide selection of vehicles at competitive prices.
           </p>
 
-          <div className="flex justify-around w-[100%] p-6 rounded-2xl bg-white/10 backdrop-blur-md">
-            <div>
+          <div className="flex flex-wrap justify-around w-full p-6 rounded-2xl bg-white/10 backdrop-blur-md">
+            <div className="text-center">
               <h2 className="text-4xl font-bold">500+</h2>
               <p className="text-gray-300">cars available</p>
             </div>
-            <div>
+            <div className="text-center">
               <h2 className="text-4xl font-bold">1000+</h2>
               <p className="text-gray-300">happy customers</p>
             </div>
-            <div>
+            <div className="text-center">
               <h2 className="text-4xl font-bold">50+</h2>
               <p className="text-gray-300">locations</p>
             </div>
-            <div>
+            <div className="text-center">
               <h2 className="text-4xl font-bold">24/7</h2>
               <p className="text-gray-300">support</p>
             </div>
