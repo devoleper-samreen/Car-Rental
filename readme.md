@@ -31,6 +31,10 @@ CarsNow is a full-stack **MERN** project where users can **browse** **search**, 
 
 ---
 
+![User Dashboard](./Frontend/src/assets/user2.PNG)
+
+---
+
 ### 🛠️ Admin Panel
 
 - Add/Edit/Delete cars
