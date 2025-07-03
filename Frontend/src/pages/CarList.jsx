@@ -151,7 +151,9 @@ function CarList() {
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 col-span-3">No cars found.</p>
+              <p className="text-gray-800 col-span-3 text-center mt-44">
+                No cars found.
+              </p>
             )}
           </div>
         </main>
