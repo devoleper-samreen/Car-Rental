@@ -197,8 +197,8 @@ function Dashboard() {
             <tbody>
               {recentBookings?.map((b, i) => (
                 <tr key={i} className="border-t">
-                  <td className="p-2">{b.userId.name}</td>
-                  <td className="p-2">{b.carId.name}</td>
+                  <td className="p-2">{b.userId?.name}</td>
+                  <td className="p-2">{b.carId?.name}</td>
                   <td className="p-2">{b.totalAmount}</td>
                   <td className="p-2">
                     <span

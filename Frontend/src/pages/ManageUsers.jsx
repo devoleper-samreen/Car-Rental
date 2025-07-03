@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import AxiosInstance from "../apiManager/axiosInstance";
 import { toast } from "react-hot-toast";
 

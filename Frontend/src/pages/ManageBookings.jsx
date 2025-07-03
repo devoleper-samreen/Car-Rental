@@ -71,8 +71,8 @@ const ManageBookings = () => {
                   {/*want to show half booking id*/}
                   {b._id.slice(0, 4)}...{b._id.slice(-3)}
                 </td>
-                <td className="p-3">{b.carId.name}</td>
-                <td className="p-3">{b.userId.name}</td>
+                <td className="p-3">{b.carId?.name}</td>
+                <td className="p-3">{b.userId?.name}</td>
                 <td className="p-3">
                   {new Date(b.pickupDate).toLocaleDateString()} -{" "}
                   {new Date(b.dropoffDate).toLocaleDateString()}

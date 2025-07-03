@@ -176,7 +176,7 @@ function ManageCars() {
                 <td className="px-6 py-3 font-medium text-gray-900">
                   {car.name}
                 </td>
-                <td className="px-6 py-3">${car.pricePerDay}</td>
+                <td className="px-6 py-3">₹{car.pricePerDay}</td>
                 <td className="px-6 py-3">{car.transmission}</td>
                 <td className="px-6 py-3 space-x-2">
                   <button
@@ -324,7 +324,7 @@ function ManageCars() {
             </button>
             <button
               type="submit"
-              className="bg-indigo-600 text-white px-4 py-2 rounded"
+              className="bg-indigo-600 text-white px-4 py-2 rounded cursor-pointer"
             >
               {isLoading ? "Loading..." : editCarId ? "Update Car" : "Add Car"}
             </button>
