@@ -8,8 +8,11 @@ import PickupDropoffForm from "../componenets/PickupDropoffForm";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function CarList() {
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const [filteredCars, setFilteredCars] = useState([]);
@@ -32,11 +35,7 @@ function CarList() {
   // Fetch filtered cars from backend
   const fetchFilteredCars = async () => {
     try {
-      console.log("Fetching cars with filters:", {
-        search,
-        category,
-        priceRange,
-      });
+      setLoading(true);
       const response = await AxiosInstance.get("/api/car/search", {
         params: {
           search,
@@ -44,11 +43,12 @@ function CarList() {
           priceRange,
         },
       });
-      console.log(response);
 
       setFilteredCars(response.data.data);
     } catch (error) {
       console.log("Error fetching cars:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -139,7 +139,22 @@ function CarList() {
         <main className="bg-[#F6F7F9] w-[78%] h-[calc(100vh-100px)] overflow-auto">
           <div className="grid grid-cols-3 gap-4 p-10">
             {/* Display filtered cars */}
-            {filteredCars.length > 0 ? (
+
+            {loading ? (
+              // Skeleton Loader (6 cards)
+              <>
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="animate-pulse bg-white rounded-xl shadow-lg p-4 h-80"
+                  >
+                    <div className="w-full h-32 bg-gray-200 rounded mb-4"></div>
+                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  </div>
+                ))}
+              </>
+            ) : filteredCars.length > 0 ? (
               filteredCars.map((car) => (
                 <div
                   key={car.id}
